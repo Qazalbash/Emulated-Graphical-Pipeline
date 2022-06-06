@@ -1,0 +1,1 @@
+Read the book and learn about the graphical pipeline.
