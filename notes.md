@@ -2,9 +2,8 @@
 
 ## Sierpinski Gasket
 
-   <img title="a title" style="float: right;" alt="Alt text" src="assets\Sierpinski_Gasket.JPG">
-   
 1. Pick an initial point $p = (x, y, 0)$ at random inside the triangle.
+   <img title="a title" style="float: right;" alt="Alt text" src="assets\Sierpinski_Gasket.JPG">
 2. Select one of the three vertices at random.
 3. Find the point $q$ halfway between $p$ and the randomly selected vertex.
 4. Display $q$ by putting some sort of marker, such as a small circle, at the corresponding location on the display.
