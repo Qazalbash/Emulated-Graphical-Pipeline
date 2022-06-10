@@ -1,6 +1,12 @@
+# June 10, 2022
+
 # June 9, 2022
 
+Reading the book, watching the lectures.
+
 # June 8, 2022
+
+Watching the lectures.
 
 # June 7, 2022
 
