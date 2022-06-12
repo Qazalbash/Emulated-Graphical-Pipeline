@@ -77,7 +77,7 @@ As before, we place data in an array, but now we have broken the display process
 
 ## PROGRAMMING TWO-DIMENSIONAL APPLICATIONS
 
-WebGL utlizes the three dimensional coordinate system. Although we can plot in two dimension setting the $z=0$. A coordinate is usually represented by a point $\bold{p}=(x,y,z)$ or column vector $\bold{p}=\begin{bmatrix}x\\y\\z\end{bmatrix}$. We use the terms vertex and point in a somewhat different manner in WebGL. A vertex is a position in space; we use two-, three-, and four-dimensional spaces in computer graphics.
+WebGL utlizes the three dimensional coordinate system. Although we can plot in two dimension setting the $z=0$. A coordinate is usually represented by a point $\textbf{p}=(x,y,z)$ or column vector $\textbf{p}=\begin{bmatrix} x & y & z\end{bmatrix}$. We use the terms vertex and point in a somewhat different manner in WebGL. A vertex is a position in space; we use two-, three-, and four-dimensional spaces in computer graphics.
 
 We want to start with as simple a program as possible by putting all the data we want to display inside a cube centered at the origin whose diagonal goes from $(−1, −1, −1)$ to $(1, 1, 1)$. This system, known as <b>clip coordinates</b>. Objects outside this cube will be eliminated or <b>clipped</b> and cannot appear on the display.
 
