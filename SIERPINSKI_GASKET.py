@@ -9,9 +9,6 @@ class vec2:
         self.x = x
         self.y = y
 
-    def __repr__(self) -> str:
-        return f"[{self.x}, {self.y}]"
-
 
 def add(u: vec2, v: vec2) -> vec2:
     return vec2(u.x + v.x, u.y + v.y)

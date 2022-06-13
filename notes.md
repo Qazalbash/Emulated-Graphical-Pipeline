@@ -139,3 +139,30 @@ var vertices = [
 ```
 
 The python equivalent to this code is [here](SIERPINSKI_GASKET_3d.py). The image after running the puthon file will look like, <img title="a title" style="float: center;" alt="Alt text" src="assets\SIERPINSKI_GASKET_3d.jpeg">
+
+## THE WEBGL APPLICATION PROGRAMMING INTERFACE
+
+### GRAPHICS FUNCTION
+
+In essence, a graphics programme is a <b>black box</b>, a term used by engineers to describe a system whose attributes are defined solely by its inputs and outputs; we may know nothing about its fundamental workings. Consider the graphics system to be a box whose inputs include application programme function calls, measurements from input devices like the mouse and keyboard, and maybe extra input like operating system messages. The visuals sent to our output devices are the primary outputs.
+
+<img title="a title" style="float: center;" alt="Alt text" src="assets\graphics_function.JPG">
+
+A graphics system performs a number of tasks in order to create output and handle user input. An API for interfacing with this system may include hundreds of functions. These functions can be divided into seven categories:
+
+1. #### <b>Primitive functions</b>
+    Primitives are low-level objects or atomic entities that our system may display. Primitives can be points, line segments, polygons, pixels, text, and many types of curves and surfaces. WebGL natively offers a limited set of primitives, such as points, lines and triangles. Larger primitive sets are frequently supported with high efficiency using programmable shaders.
+2. #### <b>Attribute functions</b>
+    In WebGL, attributes are how of an API. Attributes control how a primitive looks on the screen. They can be as simple as selecting a colour to show a line segment or a pattern to fill a polygon, or selecting a typeface for the titles on a graph.
+3. #### <b>Viewing functions</b>
+    If we are to construct a picture, we must explain our synthetic camera's position and orientation in our environment. WebGL does not have any viewing functions and instead depends on transformations in the application or shaders to create the required view. This allows us to define numerous views, although degree of freedom provided by APIs varies.
+4. #### <b>Transformation functions</b>
+    WebGL allows us to perform complex transformations such as rotation, translation, and scaling. A good API offers the user with a collection of transformation functions that allow her to perform object transformations. Transformations are carried out in WebGL by creating them in our apps and then applying them either in the application or in the shaders.
+5. #### <b>Input functions</b>
+    An API for interactive applications must have a collection of input methods that allow us to deal with the many types of input that define current graphics systems. We require functionalities to interact with devices like keyboards, mouse, and data tablets.
+6. #### <b>Control functions</b>
+    Control functions let us to interface with the window system, configure our programmes, and handle any issues that occur during programme execution. In any actual programme, we must also consider the complications of working in a multiprocessing, multiwindow environment. Such an environment is typically one in which we are linked to a network and there are other users.
+7. #### <b>Query functions</b>
+    If we are to develop device-independent applications, we should expect the API implementation to account for changes across devices, such as the number of colours available or the size of the display. However, there are some cases where we need to know some features of the specific implementation. For example, if we knew ahead of time that we would be dealing with a display that could only handle two colours rather than millions, we would probably do things differently. In general, we may frequently use other information from the API within our apps, such as camera settings or framebuffer data. A good API delivers this information via a set of query functions.
+
+### THE GRAPHICS PIPELINE AND STATE MACHINE
