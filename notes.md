@@ -128,7 +128,7 @@ for (var i = 1; i < numPoints; ++i) {
 
 The python equivalent to this code is,
 
-```py
+```python
 import math
 import random
 from matplotlib import pyplot as plt
@@ -172,3 +172,9 @@ plt.scatter(x, y, marker='.', color='black')
 plt.tight_layout()
 plt.show()
 ```
+
+```py:SIERPINSKI_GASKET.py
+
+```
+
+The image will look like <img title="a title" style="float: center;" alt="Alt text" src="assets\SIERPINSKI_GASKET.jpeg">
