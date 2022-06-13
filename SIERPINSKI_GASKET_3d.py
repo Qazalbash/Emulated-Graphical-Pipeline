@@ -1,27 +1,13 @@
 import math
 import random
+
 import matplotlib.pyplot as plt
 
-
-class vec3:
-
-    def __init__(self, x: int | float, y: int | float, z: int | float) -> None:
-        self.x = x
-        self.y = y
-        self.z = z
-
-
-def add(u: vec3, v: vec3) -> vec3:
-    return vec3(u.x + v.x, u.y + v.y, u.z + v.z)
-
-
-def scale(factor: int | float, u: vec3) -> vec3:
-    return vec3(u.x * factor, u.y * factor, u.z * factor)
-
+from vec import *
 
 numPoints = 5000
 
-vertices = [vec3(-1.0, -1.0, 0.0), vec3(0.0, 1.0, 0.0), vec3(1.0, -1.0, 0.0)]
+vertices = [vec(-1.0, -1.0, 0.0), vec(0.0, 1.0, 0.0), vec(1.0, -1.0, 0.0)]
 
 u = scale(0.5, add(vertices[0], vertices[1]))
 v = scale(0.5, add(vertices[0], vertices[2]))
