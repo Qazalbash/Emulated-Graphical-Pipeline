@@ -77,15 +77,98 @@ As before, we place data in an array, but now we have broken the display process
 
 ## PROGRAMMING TWO-DIMENSIONAL APPLICATIONS
 
-WebGL utlizes the three dimensional coordinate system. Although we can plot in two dimension setting the $z=0$. A coordinate is usually represented by a point $\textbf{p}=(x,y,z)$ or column vector $\textbf{p}=\begin{bmatrix} x & y & z\end{bmatrix}^\intercal$. We use the terms vertex and point in a somewhat different manner in WebGL. A vertex is a position in space; we use two-, three-, and four-dimensional spaces in computer graphics.
+The three-dimensional coordinate system has been used by WebGL. Although, by setting the $z=0$. A coordinate is usually represented by a point $\textbf{p}=(x,y,z)$ or column vector $\textbf{p}=\begin{bmatrix} x & y & z\end{bmatrix}^\intercal$. In WebGL, the terms vertex and point are used in somewhat different ways. A vertex is a location in space; in computer graphics, we employ two-, three-, and four-dimensional spaces.
 
-We want to start with as simple a program as possible by putting all the data we want to display inside a cube centered at the origin whose diagonal goes from $(−1, −1, −1)$ to $(1, 1, 1)$. This system, known as <b>clip coordinates</b>. Objects outside this cube will be eliminated or <b>clipped</b> and cannot appear on the display.
+We want to start with a simple programme, so we'll place all of the data we want to show within a cube centred at the origin, with a diagonal running from $(1, 1, 1)$ to $(1, 1, 1)$. This is referred as as <b>clip coordinates</b>. Objects outside this cube will be removed or <b>clipped</b> and will not appear on the screen.
 
-We could write the program using a simple array of two elements to hold the `x` and `y` values of each point. In JavaScript, we would construct such an array as follows:
+The programme might be written using a simple array of two items to hold the `x` and `y` values of each point. In JavaScript, we might create an array like this:
 
 ```js
 var p = new Float32Array([x, y]);
 var n = p.length;
 ```
 
-`p` is just a contiguous array of standard 32-bit floating-point numbers.
+`p` is just a contiguous array of standard 32-bit floating-point numbers. We can initialize an array component wise like,
+
+```js
+p[0] = x;
+p[1] = y;
+```
+
+We can produce much cleaner code if we first define a two-dimensional point object and its actions. We developed such objects and methods and included them in the MV.js package. Numeric data is stored within these objects using JavaScript arrays.
+
+The types in the OpenGL ES Shading Language (GLSL) that we use to construct our shaders correspond to the functions and three- and four-dimensional objects defined in MV.js. As a result, using MV.js should make all of our code examples clearer than if we had used regular JavaScript arrays. Although these functions were designed to be GLSL-compliant, because JavaScript does not provide operator overloading like C++ and GLSL, we wrote functions for arithmetic operations involving points, vectors, and other kinds. Nonetheless, code pieces written in MV.js, such as
+
+```js
+var a = vec2(1.0, 2.0);
+var b = vec2(3.0, 4.0);
+var c = add(a, b); // returns a new vec2
+```
+
+may be utilised in the programme and simply transformed into shader code. Individual components can be accessed via indexing, much like an array ( a[0] and a[1] ). The code below creates 5000 points by starting with the vertices of a triangle in the plane $z=0$:
+
+```js
+const numPoints = 5000;
+
+var vertices = [vec2(-1.0, -1.0), vec2(0.0, 1.0), vec2(1.0, -1.0)];
+
+var u = scale(0.5, add(vertices[0], vertices[1]));
+var v = scale(0.5, add(vertices[0], vertices[2]));
+var p = scale(0.5, add(u, v));
+
+points = [p];
+
+for (var i = 1; i < numPoints; ++i) {
+    var j = Math.floor(Math.random() * 3);
+
+    p = scale(0.5, add(points[i - 1], vertices[j]));
+    points.push(p);
+}
+```
+
+The python equivalent to this code is,
+
+```py
+import math
+import random
+from matplotlib import pyplot as plt
+
+
+class vec2:
+
+    def __init__(self, x: int | float, y: int | float) -> None:
+        self.x = x
+        self.y = y
+
+
+def add(u: vec2, v: vec2) -> vec2:
+    return vec2(u.x + v.x, u.y + v.y)
+
+
+def scale(factor: int | float, u: vec2) -> vec2:
+    return vec2(u.x * factor, u.y * factor)
+
+
+numPoints = 5000
+
+vertices = [vec2(-1.0, -1.0), vec2(0.0, 1.0), vec2(1.0, -1.0)]
+
+u = scale(0.5, add(vertices[0], vertices[1]))
+v = scale(0.5, add(vertices[0], vertices[2]))
+p = scale(0.5, add(u, v))
+
+points = [p]
+
+for i in range(1, numPoints):
+    j = math.floor(random.random() * 3)
+    p = scale(0.5, add(points[i - 1], vertices[j]))
+    points.append(p)
+
+x = [u.x for u in points]
+y = [u.y for u in points]
+
+plt.title = f'SIERPINSKI GASKET as generated with {numPoints} random points'
+plt.scatter(x, y, marker='.', color='black')
+plt.tight_layout()
+plt.show()
+```
