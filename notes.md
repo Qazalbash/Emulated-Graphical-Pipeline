@@ -166,3 +166,32 @@ A graphics system performs a number of tasks in order to create output and handl
     If we are to develop device-independent applications, we should expect the API implementation to account for changes across devices, such as the number of colours available or the size of the display. However, there are some cases where we need to know some features of the specific implementation. For example, if we knew ahead of time that we would be dealing with a display that could only handle two colours rather than millions, we would probably do things differently. In general, we may frequently use other information from the API within our apps, such as camera settings or framebuffer data. A good API delivers this information via a set of query functions.
 
 ### THE GRAPHICS PIPELINE AND STATE MACHINE
+
+Consider the entire graphics system to be a state machine, a black box containing a finite-state machine. This state machine receives inputs from the application software, which may cause the machine's state to change or it to create an output. Graphics functions in WebGL are classified into two types: those that cause primitives to flow through a pipeline and those that change the state of the pipeline. Most define the state by activating various WebGL capabilities or by configuring rendering settings. In WebGL, there are just two functions that may generate output.
+
+WebGL, the most recent version of the graphics programming language, now allows developers to design and utilise their own state variables rather than depending on third-party tools.
+
+### OpenGL AND WebGL
+
+The essential functions of WebGL are stored in a library called GL (or OpenGL in Windows). Shaders are authored in the OpenGL Shading Language (GLSL), however libraries exist to offer a basic common interface. Applications that use OpenGL and various window systems must be recompiled for each platform.
+
+To improve code readability, desktop OpenGL and WebGL make extensive use of specified constants. We do not need to adjust to the local system because WebGL works within the browser. These constants will appear in all of our WebGL apps as strings such as gl.FILL and gl.POINTS, where gl is the name we provide to the WebGL context.
+
+Neither OpenGL nor WebGL is object oriented. For many tasks, WebGL must offer a wide range of data types via different forms. WebGL and WebGL are not object oriented. Because JavaScript has only one numerical type, WebGL programmes may be simplified, and we only need to care about data types in activities involving data transfer between the CPU and the GPU. As a result, for many tasks, OpenGL and, to a lesser extent, WebGL must offer a range of data types via different forms.
+
+### WebGL INTERFACE
+
+<image src="assets\WebGL_organization.JPG" style='float :right;' width=300>
+WebGL is compatible with a variety of different online apps, frameworks, and tools. WebGL web applications are developed in JavaScript, a language with syntax similar to high-level languages like C, C++, and Java. JavaScript, in particular, is object oriented in a totally different way than C++ or Java, with relatively few native types and functions as first-class objects.
+
+The general procedure for starting a WebGL application is as follows. The programme is stored on a computer known as the server, and the computer on which we operate it is referred to as the client. The browser is a machine that can access the programme via its Uniform Resource Locator, or URL.
+
+An HTML page is made up of tags and data at its core. Web pages adhere to the industry-standard Document Object Model (DOM). Every web page is a document object, and HTML is the standard description language for them. JavaScript code identified by a script element may be executed by all browsers. The HTML Canvas element offers a drawing canvas for browser-based applications.
+
+### COORDINATE SYSTEM
+
+Previously, computer graphics systems required the user to define all information, such as vertices and pixels, in display device units. If that were true for high-level application programmes, we'd have to talk about points in terms of screen locations measured in pixels or centimetres from a screen corner.
+
+The advent of device-independent graphics liberated application programmers from having to worry about the specifics of input and output devices. In most applications, <b>vertex coordinates</b> are the same as object or world coordinates; but, depending on what we do or do not do in our shaders, vertex coordinates might be one of the various internal coordinate systems utilised in the pipeline.
+
+At some point, the values in vertex coordinates must be mapped to window coordinates, and it is performed automatically as part of the rendering process.

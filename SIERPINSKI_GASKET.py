@@ -7,7 +7,11 @@ from vec import *
 
 numPoints = 5000
 
-vertices = [vec(-1.0, -1.0), vec(0.0, 1.0), vec(1.0, -1.0)]
+vertices = [
+    vec(-1.0, -1.0),
+    vec(0.0, 1.0),
+    vec(1.0, -1.0),
+]
 
 u = scale(0.5, add(vertices[0], vertices[1]))
 v = scale(0.5, add(vertices[0], vertices[2]))
