@@ -195,3 +195,19 @@ Previously, computer graphics systems required the user to define all informatio
 The advent of device-independent graphics liberated application programmers from having to worry about the specifics of input and output devices. In most applications, <b>vertex coordinates</b> are the same as object or world coordinates; but, depending on what we do or do not do in our shaders, vertex coordinates might be one of the various internal coordinate systems utilised in the pipeline.
 
 At some point, the values in vertex coordinates must be mapped to window coordinates, and it is performed automatically as part of the rendering process.
+
+## PRIMITIVES AND ATTRIBUTES
+
+We can separate primitives into two classes: <b>geometric primitives</b> and <b>image</b>, or <b>raster, primitives</b>.
+
+## COLOR
+
+## VIEWING
+
+## CONTROL FUNCTIONS
+
+## THE GASKET PROGRAM
+
+## POLYGONS AND RECURSION
+
+## THE THREE-DIMENSIONAL GASKET
