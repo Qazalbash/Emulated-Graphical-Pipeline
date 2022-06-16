@@ -119,10 +119,10 @@ var p = scale(0.5, add(u, v));
 points = [p];
 
 for (var i = 1; i < numPoints; ++i) {
-	var j = Math.floor(Math.random() * 3);
+    var j = Math.floor(Math.random() * 3);
 
-	p = scale(0.5, add(points[i - 1], vertices[j]));
-	points.push(p);
+    p = scale(0.5, add(points[i - 1], vertices[j]));
+    points.push(p);
 }
 ```
 
@@ -132,9 +132,9 @@ Any three non-colinear points will form a plane, to generate same as above resul
 
 ```js
 var vertices = [
-	vec3(-1.0, -1.0, 0.0),
-	vec3(0.0, 1.0, 0.0),
-	vec3(1.0, -1.0, 0.0),
+    vec3(-1.0, -1.0, 0.0),
+    vec3(0.0, 1.0, 0.0),
+    vec3(1.0, -1.0, 0.0),
 ];
 ```
 
@@ -245,12 +245,64 @@ It is an interesting part of graphics and animation and also very crucial to hum
 
 <b>Additive colors</b> are produced by varing the intensity of primary colors of additive system that are RGB (Red Green Blue). <b>Subtractive color models</b> are produced by varing the intensity of complementary colors that are CMY (Cyan Magenta Yellow).
 
+-   ### RGB COLOR
+
+    They follow index color model. A natural technique is to use the color cube and to specify color components as numbers between 0.0 and 1.0, where 1.0 denotes the maximum of the corresponding primary, and 0.0 denotes a zero value of that primary. We can assign colot to each vertex as a seperate color object, such as
+
+    ```js
+    var colors = [
+        vec3(1.0, 0.0, 0.0),
+        vec3(0.0, 1.0, 0.0),
+        vec3(0.0, 0.0, 1.0),
+    ];
+    ```
+
+    We can use 4-dimensional vectors to make this RGBA color system. When A = 0.0 the object is fully transparent and when A = 1.0 the object is fully opace. We can also use, `gl.clearColor(1.0, 1.0, 1.0, 1.0);` to make screen solid color. RGB values are maximum and because $\alpha$-channel is also high this means we will get a solid white color.
+
+-   ### INDEXED COLOR
+    We have $2^m$ bits for each Red, Green and Blue color. The framebuffer can specify only $2^k$ for them. $k=m=8$ is a common practice, where user can choose 256 colors.
+
 ## VIEWING
+
+-   ### ORTHOGRAPHIC VIEW
+    All light rays coming from scene are parallel and hit perpendicular to the camera. It is formed when our camera is at infinity (considerably large distance) or the scene is at infinity. Rather than worrying about cameras an infinite distance away, suppose that we start with projectors that are parallel to the positive $z$-axis and the projection plane at $z=0$. It takes a point $(x, y, z)$ and projects it into the point $(x, y, 0)$. In WebGL the volume cube has ranges $-1\le x,y,z\le 1$.
 
 ## CONTROL FUNCTIONS
 
-## THE GASKET PROGRAM
+-   ### ASPECT RATIO AND VIEWPORT
+    The aspect ratio of a rectangle is the ratio of the rectangle’s width to its height. A viewport is a rectangular area of the display window. By default, it is the entire window, but it can be set to any smaller size in pixels via the function `gl.viewport(x, y, w, h);` where `(x,y)` is the lower-left corner of the viewport, and `w` and `h` give the width and height, respectively.
+
+<!-- ## THE GASKET PROGRAM -->
 
 ## POLYGONS AND RECURSION
+
+```js
+var vertices = [vec2(-1.0, -1.0), vec2(0.0, 1.0), vec2(1.0, -1.0)];
+
+function triangle(a, b, c) {
+    points.push(a);
+    points.push(b);
+    points.push(c);
+}
+
+function divideTriangle(a, b, c, count) {
+    if (count == 0) {
+        traingle(a, b, c);
+    } else {
+        var ab = scale(0.5, add(a, b));
+        var bc = scale(0.5, add(b, c));
+        var ac = scale(0.5, add(a, c));
+
+        --count;
+        divideTriangle(a, ab, ac, count);
+        divideTriangle(c, ac, bc, count);
+        divideTriangle(b, bc, ab, count);
+    }
+}
+```
+
+```js
+divideTriangle(vertices[0], vertices[1], vertices[2], numTimesToSubdivide);
+```
 
 ## THE THREE-DIMENSIONAL GASKET
