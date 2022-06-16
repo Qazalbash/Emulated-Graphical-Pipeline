@@ -126,7 +126,7 @@ for (var i = 1; i < numPoints; ++i) {
 }
 ```
 
-The python equivalent to this code is [here](SIERPINSKI_GASKET.py). The image after running the puthon file will look like, <img title="a title" style="float: center;" alt="Alt text" src="assets\SIERPINSKI_GASKET.jpeg">
+The python equivalent to this code is [here](codes\SIERPINSKI_GASKET.py). The image after running the puthon file will look like, <img title="a title" style="float: center;" alt="Alt text" src="assets\SIERPINSKI_GASKET.jpeg">
 
 Any three non-colinear points will form a plane, to generate same as above result along that plane we will simply update the `vertices` to `vec3` something like,
 
@@ -138,7 +138,7 @@ var vertices = [
 ];
 ```
 
-The python equivalent to this code is [here](SIERPINSKI_GASKET_3d.py). The image after running the python file will look like, <img title="a title" style="float: center;" alt="Alt text" src="assets\SIERPINSKI_GASKET_3d.jpeg">
+The python equivalent to this code is [here](codes\SIERPINSKI_GASKET_3d.py). The image after running the python file will look like, <img title="a title" style="float: center;" alt="Alt text" src="assets\SIERPINSKI_GASKET_3d.jpeg">
 
 ## THE WEBGL APPLICATION PROGRAMMING INTERFACE
 
@@ -276,7 +276,7 @@ It is an interesting part of graphics and animation and also very crucial to hum
 
 ## POLYGONS AND RECURSION
 
-Similar python code is [here](divide_triangle.py).
+Similar python code is [here](codes\divide_triangle.py).
 
 ```js
 var vertices = [vec2(-1.0, -1.0), vec2(0.0, 1.0), vec2(1.0, -1.0)];
