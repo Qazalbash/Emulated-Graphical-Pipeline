@@ -276,6 +276,8 @@ It is an interesting part of graphics and animation and also very crucial to hum
 
 ## POLYGONS AND RECURSION
 
+Similar python code is [here](divide_triangle.py).
+
 ```js
 var vertices = [vec2(-1.0, -1.0), vec2(0.0, 1.0), vec2(1.0, -1.0)];
 
@@ -287,7 +289,7 @@ function triangle(a, b, c) {
 
 function divideTriangle(a, b, c, count) {
     if (count == 0) {
-        traingle(a, b, c);
+        triangle(a, b, c);
     } else {
         var ab = scale(0.5, add(a, b));
         var bc = scale(0.5, add(b, c));

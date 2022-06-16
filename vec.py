@@ -8,6 +8,9 @@ class vec:
         self.y = y
         self.z = z
 
+    # def __repr__(self) -> str:
+    #     return f"[{self.x}, {self.y}, {self.z}]"
+
 
 def add(u: vec, v: vec) -> vec:
     return vec(u.x + v.x, u.y + v.y, u.z + v.z)
