@@ -138,7 +138,7 @@ var vertices = [
 ];
 ```
 
-The python equivalent to this code is [here](SIERPINSKI_GASKET_3d.py). The image after running the puthon file will look like, <img title="a title" style="float: center;" alt="Alt text" src="assets\SIERPINSKI_GASKET_3d.jpeg">
+The python equivalent to this code is [here](SIERPINSKI_GASKET_3d.py). The image after running the python file will look like, <img title="a title" style="float: center;" alt="Alt text" src="assets\SIERPINSKI_GASKET_3d.jpeg">
 
 ## THE WEBGL APPLICATION PROGRAMMING INTERFACE
 
@@ -301,9 +301,7 @@ function divideTriangle(a, b, c, count) {
         divideTriangle(b, bc, ab, count);
     }
 }
-```
 
-```js
 divideTriangle(vertices[0], vertices[1], vertices[2], numTimesToSubdivide);
 ```
 

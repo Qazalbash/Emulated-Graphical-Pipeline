@@ -1,4 +1,30 @@
+# June 16, 2022
+
+Reading the book. Writing Python equivalent codes.
+
+# June 15, 2022
+
+Reading the book.
+
+# June 14, 2022
+
+Reading the book. Writing Python equivalent codes.
+
+# June 13, 2022
+
+Reading the book.
+
+# June 12, 2022
+
+Reading the book.
+
+# June 11, 2022
+
+Reading the book.
+
 # June 10, 2022
+
+Reading the book.
 
 # June 9, 2022
 
