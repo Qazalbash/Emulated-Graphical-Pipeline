@@ -119,10 +119,10 @@ var p = scale(0.5, add(u, v));
 points = [p];
 
 for (var i = 1; i < numPoints; ++i) {
-    var j = Math.floor(Math.random() * 3);
+	var j = Math.floor(Math.random() * 3);
 
-    p = scale(0.5, add(points[i - 1], vertices[j]));
-    points.push(p);
+	p = scale(0.5, add(points[i - 1], vertices[j]));
+	points.push(p);
 }
 ```
 
@@ -132,9 +132,9 @@ Any three non-colinear points will form a plane, to generate same as above resul
 
 ```js
 var vertices = [
-    vec3(-1.0, -1.0, 0.0),
-    vec3(0.0, 1.0, 0.0),
-    vec3(1.0, -1.0, 0.0),
+	vec3(-1.0, -1.0, 0.0),
+	vec3(0.0, 1.0, 0.0),
+	vec3(1.0, -1.0, 0.0),
 ];
 ```
 
@@ -200,7 +200,50 @@ At some point, the values in vertex coordinates must be mapped to window coordin
 
 We can separate primitives into two classes: <b>geometric primitives</b> and <b>image</b>, or <b>raster, primitives</b>.
 
+-   ### GEOMETRIC PRIMITIVES
+    They contain points, lines, polygon, and sent seperatly to the geometric pipline in the graphical pipeline. In that pipeline they go through different geometric manipulation like, rotation, translation, clipping and rasterization.
+    -   <b>Points</b> (`gl.POINTS`) Each vertex is displayed at a size of at least one pixel
+    -   <b>Line segments</b> (`gl.LINES`) The line-segment type causes successive pairs of vertices to be interpreted as the endpoints of individual segments. Note that successive segments usually are disconnected because the vertices are processed on a pairwise basis.
+    -   <b>POLYLINES</b> (`gl.LINE_STRIP`, `gl.LINE_LOOP`) If successive vertices (and line segments) are to be connected, we can use the line strip, or polyline form. Many curves can be approximated via a suitable polyline. If we wish the polyline to be closed, we can locate the final vertex in the same place as the first, or we can use the `gl.LINE_LOOP` type, which will draw a line segment from the final vertex to the first, thus creating a closed path.
+-   ### POLYGON BASICS
+
+    -   #### Definition
+        Any object that has a border which can be described by a line loop.
+    -   #### GOOD POLYGON
+        -   <b>Simple</b> polygons which do not interset theirselves.
+        -   <b>Convex</b> means any line segment that is formed by taking arbitary two unique points from interior or border of the polygon does not interset the polygon.
+        -   <b>Flat</b> polygons lie in a unigue plan in $\mathbb{R}^3$.
+
+    The performance of graphics systems is characterized by the number of polygons per second that can be rendered.
+
+-   ### POLYGONs IN WebGL
+
+    <image src="assets\Triangle.png" style="float :right;" width=350>
+    WebGL only supports traingles.
+
+    -   <b>Triangle</b> (`gl.TRIANGLES`) The edges are the same as they would be if we used line loops. Each successive group of three vertices specifies a new triangle.
+    -   <b>Strips and fans</b> (`gl.TRIANGLE_STRIP` , `gl.TRIANGLE_FAN`) These objects are based on groups of triangles that share vertices and edges. In the triangle strip, for example, each additional vertex is combined with the previous two vertices to define a new triangle (Figure 2.14). A triangle fan is based on one fixed point. The next two points determine the first triangle, and subsequent triangles are formed from one new point, the previous point, and the first (fixed) point.
+
+-   ### TRIANGULATION
+    Triangulation is a special case of the more general problem of tessellation. The usual strategy is to start with a list of vertices and generate a set of triangles consistent with the polygon defined by the list, a process known as <b>triangulation</b>. Every traingle is a good polygon (see above for reference). <b>Delaunay triangulation</b> algorithm finds a best triangulation.
+-   ### TEXT
+
+    <b>Stroke text</b> is constructed like other geometric objects. We use vertices to define line segments or curves that outline each character. If the characters are defined by closed boundaries, we can fill them. The advantage of stroke text is that it can be defined to have all the detail of any other object, and because it is defined in the same way as other graphical objects are, it can be manipulated by our standard transformations and viewed like any other graphical primitive.
+
+    <b>Raster text</b> is simple and fast. Characters are defined as rectangles of bits called <b>bit blocks</b>. Each block defines a single character by the pattern of 0 and 1 bits in the block. A raster character can be placed in the framebuffer rapidly by a <b>bit-block-transfer (bitblt)</b> operation, which moves the block of bits using a single function call.
+
+-   ### CURVEY OBJECTS
+
+    Bazier Curves and other techniques are used for it.
+
+-   ### ATTRIBUTES
+    Properties that describe how an object should be rendered are called <b>attributes</b>.
+
 ## COLOR
+
+It is an interesting part of graphics and animation and also very crucial to human understanding and psychie. Visible color is characterized by a function $C(\lambda)\in [350 \text{ nm}, 780 \text{ nm}]$, where $\lambda$ is the wave-length of the light. Human brain does not percieve the complete visible light range, but it is sensitive to three colors (as our retina have color cones which are sensitive to three colors) - the <b>tristimulus values</b>.
+
+<b>Additive colors</b> are produced by varing the intensity of primary colors of additive system that are RGB (Red Green Blue). <b>Subtractive color models</b> are produced by varing the intensity of complementary colors that are CMY (Cyan Magenta Yellow).
 
 ## VIEWING
 
