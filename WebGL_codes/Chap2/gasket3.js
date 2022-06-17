@@ -26,9 +26,10 @@ window.onload = function init() {
     ];
 
     points = [vec3(0.0, 0.0, 0.0)];
+    var j;
 
     for (var i = 0; points.length < NumPoints; ++i) {
-        var j = Math.floor(Math.random() * 4);
+        j = Math.floor(Math.random() * 4);
 
         points.push(mix(points[i], vertices[j], 0.5));
     }

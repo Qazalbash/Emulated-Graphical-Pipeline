@@ -34,8 +34,10 @@ window.onload = function init() {
     // Add our randomly chosen point into our array of points
     points = [p];
 
+    var j;
+
     for (var i = 0; points.length < NumPoints; ++i) {
-        var j = Math.floor(Math.random() * 3);
+        j = Math.floor(Math.random() * 3);
 
         p = add(points[i], vertices[j]);
         p = scale(0.5, p);
