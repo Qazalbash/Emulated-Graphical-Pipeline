@@ -1,9 +1,8 @@
 "use strict";
 
-var gl;
-var points;
-
-var NumPoints = 5000;
+var gl,
+    points,
+    NumPoints = 5000;
 
 window.onload = function init() {
     var canvas = document.getElementById("gl-canvas");
@@ -25,20 +24,17 @@ window.onload = function init() {
     var coeffs = vec3(Math.random(), Math.random(), Math.random());
     coeffs = normalize(coeffs);
 
-    var a = scale(coeffs[0], vertices[0]);
-    var b = scale(coeffs[1], vertices[1]);
-    var c = scale(coeffs[2], vertices[2]);
-
-    var p = add(a, add(b, c));
+    var a = scale(coeffs[0], vertices[0]),
+        b = scale(coeffs[1], vertices[1]),
+        c = scale(coeffs[2], vertices[2]),
+        p = add(a, add(b, c)),
+        j;
 
     // Add our randomly chosen point into our array of points
     points = [p];
 
-    var j;
-
     for (var i = 0; points.length < NumPoints; ++i) {
         j = Math.floor(Math.random() * 3);
-
         p = add(points[i], vertices[j]);
         p = scale(0.5, p);
         points.push(p);

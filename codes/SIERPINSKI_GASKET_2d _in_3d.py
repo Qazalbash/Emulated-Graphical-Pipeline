@@ -8,21 +8,20 @@ from vec import *
 numPoints = 5000
 
 vertices = [
-    vec(-1.0, -1.0, -1.0),
-    vec(1.0, -1.0, -1.0),
+    vec(-1.0, -1.0, 0.0),
     vec(0.0, 1.0, 0.0),
-    vec(0.0, -1.0, 1.0),
+    vec(1.0, -1.0, 0.0),
 ]
 
 u = scale(0.5, add(vertices[0], vertices[1]))
 v = scale(0.5, add(vertices[0], vertices[2]))
 p = scale(0.5, add(u, v))
 
-points = [vec(0.0, 0.0, 0.0)]
+points = [p]
 
-for i in range(0, numPoints):
-    j = math.floor(random.random() * 4)
-    p = scale(0.5, add(points[i], vertices[j]))
+for i in range(1, numPoints):
+    j = math.floor(random.random() * 3)
+    p = scale(0.5, add(points[i - 1], vertices[j]))
     points.append(p)
 
 x = [u.x for u in points]

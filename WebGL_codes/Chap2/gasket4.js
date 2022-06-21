@@ -1,12 +1,10 @@
 "use strict";
 
-var canvas;
-var gl;
-
-var points = [];
-var colors = [];
-
-var NumTimesToSubdivide = 3;
+var gl,
+    canvas,
+    points = [],
+    colors = [],
+    NumTimesToSubdivide = 3;
 
 window.onload = function init() {
     canvas = document.getElementById("gl-canvas");
@@ -16,10 +14,7 @@ window.onload = function init() {
         alert("WebGL isn't available");
     }
 
-    //
     //  Initialize our data for the Sierpinski Gasket
-    //
-
     // First, initialize the vertices of our 3D gasket
     // Four vertices on unit circle
     // Intial tetrahedron with equal length sides

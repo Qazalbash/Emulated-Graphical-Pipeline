@@ -1,9 +1,8 @@
 "use strict";
 
-var gl;
-var points;
-
-var NumPoints = 5000;
+var gl,
+    points,
+    NumPoints = 5000;
 
 window.onload = function init() {
     var canvas = document.getElementById("gl-canvas");
@@ -22,9 +21,10 @@ window.onload = function init() {
     // Specify a starting point p for our iterations
     // p must lie inside any set of three vertices
 
-    var u = add(vertices[0], vertices[1]);
-    var v = add(vertices[0], vertices[2]);
-    var p = scale(0.25, add(u, v));
+    var u = add(vertices[0], vertices[1]),
+        v = add(vertices[0], vertices[2]),
+        p = scale(0.25, add(u, v)),
+        j;
 
     // And, add our initial point into our array of points
 
@@ -33,8 +33,6 @@ window.onload = function init() {
     // Compute new points
     // Each new point is located midway between
     // last point and a randomly chosen vertex
-
-    var j;
 
     for (var i = 0; points.length < NumPoints; ++i) {
         j = Math.floor(Math.random() * 3);

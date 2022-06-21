@@ -1,11 +1,9 @@
 "use strict";
 
-var canvas;
-var gl;
-
-var points = [];
-
-var NumTimesToSubdivide = 5;
+var gl,
+    canvas,
+    points = [],
+    NumTimesToSubdivide = 5;
 
 window.onload = function init() {
     canvas = document.getElementById("gl-canvas");
@@ -16,7 +14,6 @@ window.onload = function init() {
     }
 
     //  Initialize our data for the Sierpinski Gasket
-
     // First, initialize the corners of our gasket with three points.
 
     var vertices = [vec2(-1, -1), vec2(0, 1), vec2(1, -1)];
@@ -60,9 +57,9 @@ function divideTriangle(a, b, c, count) {
     } else {
         //bisect the sides
 
-        var ab = mix(a, b, 0.5);
-        var ac = mix(a, c, 0.5);
-        var bc = mix(b, c, 0.5);
+        var ab = mix(a, b, 0.5),
+            ac = mix(a, c, 0.5),
+            bc = mix(b, c, 0.5);
 
         --count;
 

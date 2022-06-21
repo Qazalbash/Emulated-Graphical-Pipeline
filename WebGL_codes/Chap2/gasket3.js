@@ -1,10 +1,9 @@
 "use strict";
 
-var canvas;
-var gl;
-var points;
-
-var NumPoints = 5000;
+var gl,
+    canvas,
+    points,
+    NumPoints = 5000;
 
 window.onload = function init() {
     canvas = document.getElementById("gl-canvas");
@@ -15,7 +14,6 @@ window.onload = function init() {
     }
 
     //  Initialize our data for the Sierpinski Gasket
-
     // First, initialize the vertices of our 3D gasket
 
     var vertices = [
@@ -30,7 +28,6 @@ window.onload = function init() {
 
     for (var i = 0; points.length < NumPoints; ++i) {
         j = Math.floor(Math.random() * 4);
-
         points.push(mix(points[i], vertices[j], 0.5));
     }
 
