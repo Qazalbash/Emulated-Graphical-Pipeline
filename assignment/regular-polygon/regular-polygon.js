@@ -11,15 +11,11 @@ window.onload = function init() {
 	}
 	gl.viewport(0, 0, canvas.width, canvas.height);
 
-	show();
+	draw();
 };
 
-function show() {
-	var n = Number(document.getElementById("sides").value),
-		color = document.getElementById("color").value;
-	const theta = (2 * Math.PI) / n,
-		r = 0.5;
-
+function polygon(n, r) {
+	const theta = (2 * Math.PI) / n;
 	var x = r,
 		y = 0;
 
@@ -30,10 +26,19 @@ function show() {
 		y = r * Math.sin(theta * t);
 		points.push(vec2(x, y));
 	}
+}
+
+function draw() {
+	const n = Number(document.getElementById("sides").value),
+		// color = document.getElementById("color").value,
+		r = Number(document.getElementById("size").value);
+
+	polygon(n, r);
 
 	gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
-	var fshader = fragmentShader(color),
+	// var fshader = fragmentShader(color),
+	var fshader = fragmentShader(),
 		vshader = vertexShader(),
 		program = createProgram(gl, vshader, fshader);
 
@@ -50,23 +55,22 @@ function show() {
 	render();
 }
 
-function fragmentShader(color) {
-	var value = "1.0, 0.0, 0.0";
-
-	if (color == "yellow") {
-		value = "1.0, 1.0, 0.0";
-	} else if (color == "green") {
-		value = "0.0, 1.0, 0.0";
-	} else if (color == "blue") {
-		value = "0.0, 0.0, 1.0";
-	} else if (color == "white") {
-		value = "1.0, 1.0, 1.0";
-	}
+function fragmentShader() {
+	const R = Number(document.getElementById("myRedRange").value),
+		G = Number(document.getElementById("myGreenRange").value),
+		B = Number(document.getElementById("myBlueRange").value),
+		A = Number(document.getElementById("myAlphaRange").value);
 
 	var shader =
 		"precision mediump float;\nvoid\nmain()\n{\ngl_FragColor = vec4( " +
-		value +
-		", 1.0 );\n}";
+		R +
+		", " +
+		G +
+		", " +
+		B +
+		", " +
+		A +
+		" );\n}";
 
 	return shader;
 }
