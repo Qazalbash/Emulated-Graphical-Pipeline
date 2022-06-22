@@ -1,3 +1,11 @@
+# June 20, 2022
+
+Reviewing the js files.
+
+# June 17, 2022
+
+STRP presentation and reviewing the js files.
+
 # June 16, 2022
 
 Reading the book. Writing Python equivalent codes.
