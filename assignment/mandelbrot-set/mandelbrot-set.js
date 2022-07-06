@@ -1,7 +1,5 @@
 "use strict";
 
-"use strict";
-
 var gl,
 	t,
 	level = [],
@@ -16,16 +14,13 @@ window.onload = function init() {
 	}
 
 	gl.viewport(0, 0, canvas.width, canvas.height);
-
-	for (var i = -2; i <= 2; i += 1 / n) {
-		for (var j = -2; j <= 2; j += 1 / n) {
-			t = mandelbrot_set(vec2(i / n, j / n));
-			level.push(t);
+	for (var i = -2; i <= 2; i++) {
+		for (var j = -2; j <= 2; j++) {
+			level.push(mandelbrot_set(vec2(i, j)));
 		}
 	}
 
-	console.log(level);
-	drawScene();
+	draw();
 };
 
 function square(z) {
@@ -47,79 +42,76 @@ function mandelbrot_set(c, MAX_ITTER = 100) {
 	return count;
 }
 
-function initBuffers() {
-	// white
-	// red
-	// green
-	// blue
-	const colors = [
-		1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0,
-		1.0, 1.0,
-	];
+const vSHADER = `attribute vec2 pos;
+	varying vec2 _pos;
+	
+	void main() {
+		gl_Position = vec4(_pos = pos, 0, 1);
+	}`,
+	fSHADER = `precision highp float;
+	varying vec2 _pos;
 
-	const colorBuffer = gl.createBuffer();
+	void main() {
+	    vec2 c = _pos * 1.5 - vec2(0.7, 0), z;
+	    for(int i = 0; i < 10000; i++) {
+	        z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+	        gl_FragColor = vec4(vec3((float(i) - log(log(length(z)))) / 64.0), 1);
+	        if (length(z) > 2.0) return;
+	    }
+	    gl_FragColor = vec4(vec3(0), 1);`;
 
-	gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
-	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+function draw() {
+	gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
-	return {
-		position: positionBuffer,
-		color: colorBuffer,
-	};
+	program = createProgram(gl, vSHADER, fSHADER);
+
+	gl.useProgram(program);
+
+	// gl.vertexAttribPointer(
+	// 	gl.getAttribLocation(program, "pos"),
+	// 	2,
+	// 	gl.FLOAT,
+	// 	false,
+	// 	0,
+	// 	0
+	// );
+	// gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+	var vBuffer = gl.createBuffer();
+	gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
+	gl.bufferData(gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW);
+
+	var vPosition = gl.getAttribLocation(program, "pos");
+	gl.vertexAttribPointer(vPosition, 2, gl.FLOAT, false, 0, 0);
+	gl.enableVertexAttribArray(vPosition);
+
+	render();
 }
 
-function shaderProgram() {
-	return level;
+function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
+	var vsh = gl.createShader(gl.VERTEX_SHADER);
+	gl.shaderSource(vsh, vertexShaderSource);
+	gl.compileShader(vsh);
+	if (!gl.getShaderParameter(vsh, gl.COMPILE_STATUS)) {
+		throw "Error in vertex shader:  " + gl.getShaderInfoLog(vsh);
+	}
+	var fsh = gl.createShader(gl.FRAGMENT_SHADER);
+	gl.shaderSource(fsh, fragmentShaderSource);
+	gl.compileShader(fsh);
+	if (!gl.getShaderParameter(fsh, gl.COMPILE_STATUS)) {
+		throw "Error in fragment shader:  " + gl.getShaderInfoLog(fsh);
+	}
+	var prog = gl.createProgram();
+	gl.attachShader(prog, vsh);
+	gl.attachShader(prog, fsh);
+	gl.linkProgram(prog);
+	if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+		throw "Link error in program:  " + gl.getProgramInfoLog(prog);
+	}
+	return prog;
 }
 
-const vsSource = `
-    attribute vec4 aVertexPosition;
-    attribute vec4 aVertexColor;
-
-    uniform mat4 uModelViewMatrix;
-    uniform mat4 uProjectionMatrix;
-
-    varying lowp vec4 vColor;
-
-    void main(void) {
-      gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
-      vColor = aVertexColor;
-    }
-  `,
-	fsSource = `
-    varying lowp vec4 vColor;
-
-    void main(void) {
-      gl_FragColor = vColor;
-    }
-  `,
-	programInfo = {
-		program: shaderProgram,
-		attribLocations: {
-			vertexPosition: gl.getAttribLocation(
-				shaderProgram,
-				"aVertexPosition"
-			),
-			vertexColor: gl.getAttribLocation(shaderProgram, "aVertexColor"),
-		},
-	};
-// Tell WebGL how to pull out the colors from the color buffer
-// into the vertexColor attribute.
-function drawScene() {
-	var buffers = initBuffers();
-	const numComponents = 4;
-	const type = gl.FLOAT;
-	const normalize = false;
-	const stride = 0;
-	const offset = 0;
-	gl.bindBuffer(gl.ARRAY_BUFFER, buffers.color);
-	gl.vertexAttribPointer(
-		programInfo.attribLocations.vertexColor,
-		numComponents,
-		type,
-		normalize,
-		stride,
-		offset
-	);
-	gl.enableVertexAttribArray(programInfo.attribLocations.vertexColor);
+function render() {
+	gl.clear(gl.COLOR_BUFFER_BIT);
+	gl.drawArrays(gl.TRIANGLE, 0, level.length);
 }

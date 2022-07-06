@@ -1,0 +1,16 @@
+Date: June 21, 2022
+
+Type of meeting: Indivisual meeting.
+
+Attendees: Meesum Ali Qazalbash, Dr Waqar Saleem.
+
+Meeting agenda: Discuss the work done in the last week.
+
+Point discussed: 
+-   We discussed the camera and the viewing volume, and how that works in WebGL.
+-   We talk about the different stages of pipeline, prominantly, vetex shader and fragment shader.
+-   We look some of the examples of WebGL program from simple to more complex.
+
+Action Item:
+-   Write a simple WebGL program that draws polygons.
+-   Write a WebGL program that generates and shades a mandelbrot set.

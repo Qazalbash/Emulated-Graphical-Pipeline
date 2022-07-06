@@ -76,11 +76,13 @@ function fragmentShader() {
 }
 
 function vertexShader() {
-	var shader =
-		"attribute vec4 vPosition;\n" +
-		"void\n" +
-		"main()\n{\n" +
-		"gl_PointSize = 1.0;\ngl_Position = vPosition;\n}\n";
+	var shader = `
+		attribute vec4 vPosition;
+		void
+		main() {
+		gl_PointSize = 1.0;
+		gl_Position = vPosition;
+	};`;
 	return shader;
 }
 
