@@ -62,7 +62,10 @@ function fragmentShader() {
 		A = Number(document.getElementById("myAlphaRange").value);
 
 	var shader =
-		"precision mediump float;\nvoid\nmain()\n{\ngl_FragColor = vec4( " +
+		`precision mediump float;
+		void main()
+		{
+			gl_FragColor = vec4( ` +
 		R +
 		", " +
 		G +
@@ -70,7 +73,8 @@ function fragmentShader() {
 		B +
 		", " +
 		A +
-		" );\n}";
+		` );
+	}`;
 
 	return shader;
 }
@@ -78,11 +82,10 @@ function fragmentShader() {
 function vertexShader() {
 	var shader = `
 		attribute vec4 vPosition;
-		void
-		main() {
-		gl_PointSize = 1.0;
-		gl_Position = vPosition;
-	};`;
+		void main() {
+			gl_PointSize = 1.0;
+			gl_Position = vPosition;
+		}`;
 	return shader;
 }
 

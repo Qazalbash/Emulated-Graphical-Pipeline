@@ -42,7 +42,7 @@ function mandelbrot_set(c, MAX_ITTER = 100) {
 	return count;
 }
 
-const vSHADER = `attribute vec2 pos;
+var vSHADER = `attribute vec2 pos;
 	varying vec2 _pos;
 	
 	void main() {
@@ -52,13 +52,20 @@ const vSHADER = `attribute vec2 pos;
 	varying vec2 _pos;
 
 	void main() {
-	    vec2 c = _pos * 1.5 - vec2(0.7, 0), z;
-	    for(int i = 0; i < 10000; i++) {
+	    vec2 z, c = _pos * 1.5 - vec2(0.7, 0);
+	    int i = 0;
+		for(;i < 10000; i++) {
 	        z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
-	        gl_FragColor = vec4(vec3((float(i) - log(log(length(z)))) / 64.0), 1);
-	        if (length(z) > 2.0) return;
+	        if (length(z) > 2.0) {
+				break;
+			}
 	    }
-	    gl_FragColor = vec4(vec3(0), 1);`;
+		if (i == 9999){
+		    gl_FragColor = vec4(vec3(0,0,0), 1);
+		}
+		else {
+			gl_FragColor = vec4(vec3((float(i) - log(log(length(z)))) / 64.0), 1);
+		}`;
 
 function draw() {
 	gl.clearColor(0.0, 0.0, 0.0, 1.0);
