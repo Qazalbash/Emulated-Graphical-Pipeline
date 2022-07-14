@@ -1,3 +1,27 @@
+# July 8, 2022
+
+I was out of patience with the error and that was taking too much time. I asked Dr Waqar, but the eid has come so the process is halt hopefully he will answer the question after Eid.
+
+# July 7, 2022
+
+Worked on fixing the error and the changing the shaders, because the last shaders I wrote they were showing the black and white image. But I have found a different method to make it colorful. before the error need to be fixed.
+
+# July 6, 2022
+
+That error has not been solved. It is still a problem.
+
+# July 5, 2022
+
+Worked on rewriting the whole thing from scratch, and bowred some code from the regular polygon code, I did previously. Things seems to go pretty well. but there is only one error which I don't know how to fix.
+
+# July 4, 2022
+
+I managed to get some different codes for shaders but they are showing some errors.
+
+# July 1, 2022
+
+The shaders are causing alot of problems with the rendering, and I'm not sure why. I'm working on a fix, but I'm not sure if it will be possible.
+
 # June 30, 2022
 
 Tried different methods to solve the shaders problem.
