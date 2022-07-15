@@ -7,19 +7,19 @@ const MAX_ITERATION = 100;
 
 var vSHADER = `attribute vec2 vPosition;
 			attribute vec4 vColor;
-			varying vec4 g1_vColor;
+			varying vec4 colors;
 
 			void main(){
 				gl_Position = vec4(vPosition, 0.0, 1.0);
-				g1_vColor = vColor;
+				colors = vColor;
 				gl_PointSize = 1.0;
 			}`,
 	fSHADER = `precision highp float;
-			uniform vec4 g1_vColor;
+			uniform vec4 colors;
 	
 			void main()
 			{
-				gl_FragColor = g1_vColor;
+				gl_FragColor = colors;
 			}`;
 
 function norm(z) {
@@ -28,10 +28,13 @@ function norm(z) {
 
 function mandelbrot_set(c) {
 	let count = 0,
-		z = { x: 0.0, y: 0.0 };
+		z = { x: 0.0, y: 0.0 },
+		z_ = { x: 0.0, y: 0.0 };
 	do {
-		z.x = z.x * z.x - z.y * z.y + c.x;
-		z.y = 2 * z.x * z.y + c.y;
+		z_.x = z.x * z.x - z.y * z.y + c.x;
+		z_.y = 2 * z.x * z.y + c.y;
+		z.x = z_.x;
+		z.y = z_.y;
 		count++;
 	} while (norm(z) <= 2 && count <= MAX_ITERATION);
 
@@ -65,12 +68,12 @@ function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
 }
 
 function map_point(P, Q, A, B, X) {
-	var PX = 0,
-		PQ = 0,
-		PX_dist = 0,
+	var PX_dist = 0,
 		PQ_dist = 0,
 		alpha;
 	if (isVector(P)) {
+		var PX = 0,
+			PQ = 0;
 		for (let i = 0; i < P.length; i++) {
 			PX += (P[i] - X[i]) ** 2;
 
@@ -86,10 +89,8 @@ function map_point(P, Q, A, B, X) {
 		PQ_dist = Q - P;
 		alpha = PX_dist / PQ_dist;
 	}
-	let Y;
-	Y = mix(A, B, alpha);
 
-	return Y;
+	return mix(A, B, alpha);
 }
 
 function isVector(v) {
@@ -115,54 +116,32 @@ window.onload = function init() {
 
 	const real = { start: -2, end: 2 },
 		imag = { start: -2, end: 2 };
+
 	let colors = [],
 		width = canvas.width,
 		height = canvas.height;
+
 	var color,
-		complex,
-		red = vec4(0.8, 0, 0, 1),
+		z,
+		red = vec4(1, 0, 0, 1),
 		green = vec4(0, 1, 0, 1),
 		blue = vec4(0, 0, 1, 1);
 
 	for (let p = 0; p <= width; p++) {
 		for (let q = 0; q <= height; q++) {
-			complex = {
-				x: map_point(
-					vec2(0, 0),
-					vec2(width, 0),
-					vec2(real.start, 0),
-					vec2(real.end, 0),
-					vec2(p, 0)
-				)[0],
-				y: map_point(
-					vec2(0, 0),
-					vec2(0, height),
-					vec2(0, imag.start),
-					vec2(0, imag.end),
-					vec2(0, q)
-				)[1],
+			z = {
+				x: map_point(0, width, real.start, real.end, p),
+				y: map_point(0, height, imag.start, imag.end, q),
 			};
 
-			const escapetime = mandelbrot_set(complex);
+			const escapetime = mandelbrot_set(z);
 
-			let new_complex = {
-				nx: map_point(
-					vec2(real.start, 0),
-					vec2(real.end, 0),
-					vec2(-1, 0),
-					vec2(1, 0),
-					vec2(complex.x, 0)
-				)[0],
-				ny: map_point(
-					vec2(0, imag.start),
-					vec2(0, imag.end),
-					vec2(0, -1),
-					vec2(0, 1),
-					vec2(0, complex.y)
-				)[1],
+			let z_ = {
+				x: map_point(real.start, real.end, -1, 1, z.x),
+				y: map_point(imag.start, imag.end, -1, 1, z.y),
 			};
 
-			level.push(vec2(new_complex.nx, new_complex.ny));
+			level.push(vec2(z_.x, z_.y));
 
 			if (escapetime == MAX_ITERATION) {
 				color = blue;
