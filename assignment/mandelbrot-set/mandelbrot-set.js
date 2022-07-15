@@ -46,7 +46,6 @@ window.onload = function init() {
 					vec2(0, q)
 				)[1],
 			};
-			const escapetime = mandelbrot_set(complex);
 			let new_complex = {
 				nx: map_point(
 					vec2(real.start, 0),
@@ -64,6 +63,7 @@ window.onload = function init() {
 				)[1],
 			};
 
+			const escapetime = mandelbrot_set(complex);
 			level.push(vec2(new_complex.nx, new_complex.ny));
 
 			if (escapetime == MAX_ITERATION) {
@@ -179,41 +179,28 @@ function map_point(P, Q, A, B, X) {
     X, P, Q = vec2
     A, B, Y = vec4
     */
-	var PX = 0;
-	var PQ = 0;
-	let PX_dist = 0;
-	let PQ_dist = 0;
-	// for (let i = 0; i < P.length; i++) {
-	// 	PX += (P[i] - X[i]) ** 2; //calculates square to calculare distance
+	var PX = 0,
+		PQ = 0,
+		PX_dist = 0,
+		PQ_dist = 0;
+	// checks if it's a vector
+	if (isVector(P)) {
+		for (let i = 0; i < P.length; i++) {
+			PX += (P[i] - X[i]) ** 2; //calculates square to calculare distance
 
-	// 	PQ += (P[i] - Q[i]) ** 2; //calculates square to calculare distance
-	// }
+			PQ += (P[i] - Q[i]) ** 2; //calculates square to calculare distance
+		}
 
-	// PX_dist = Math.sqrt(PX); //distance between P and X
-	// PQ_dist = Math.sqrt(PQ); //distance between P and Q
+		PX_dist = Math.sqrt(PX); //distance between P and X
+		PQ_dist = Math.sqrt(PQ); //distance between P and Q
 
-	// const alpha = PX_dist / PQ_dist;
-	//checks if it's a vector
-	// if (isVector(P)) {
-	// 	for (let i = 0; i < P.length; i++) {
-	// 		PX += (P[i] - X[i]) ** 2; //calculates square to calculare distance
-
-	// 		PQ += (P[i] - Q[i]) ** 2; //calculates square to calculare distance
-	// 	}
-
-	// 	PX_dist = Math.sqrt(PX); //distance between P and X
-	// 	PQ_dist = Math.sqrt(PQ); //distance between P and Q
-
-	// 	alpha = PX_dist / PQ_dist;
-	// } else {
-	// 	//if it's not a point
-	// 	PX_dist = X - P;
-	// 	PQ_dist = Q - P;
-	// 	alpha = PX_dist / PQ_dist;
-	// }
-	PX_dist = X - P;
-	PQ_dist = Q - P;
-	const alpha = PX_dist / PQ_dist;
+		alpha = PX_dist / PQ_dist;
+	} else {
+		//if it's not a point
+		PX_dist = X - P;
+		PQ_dist = Q - P;
+		alpha = PX_dist / PQ_dist;
+	}
 	//mapped point on the given A B range
 	let Y = mix(A, B, alpha);
 
