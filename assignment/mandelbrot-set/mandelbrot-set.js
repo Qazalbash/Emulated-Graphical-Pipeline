@@ -1,9 +1,9 @@
 "use strict";
 
 var gl,
-	t,
-	level = [(2, 1), (1, 1), (1, 2), (2, 2)],
-	n = 10;
+	level = [];
+
+const MAX_ITERATION = 100;
 
 window.onload = function init() {
 	var canvas = document.getElementById("set");
@@ -12,16 +12,88 @@ window.onload = function init() {
 	if (!gl) {
 		alert("WebGL is not available");
 	}
+	gl.clearColor(1.0, 1.0, 1.0, 1.0);
 
-	gl.viewport(0, 0, canvas.width, canvas.height);
-	var z;
-	for (var i = -2; i <= 2; i = i + 1 / n) {
-		for (var j = -2; j <= 2; j = j + 1 / n) {
-			level.push(mandelbrot_set(vec2(i, j)));
+	var program = createProgram(gl, vSHADER, fSHADER);
+	gl.useProgram(program);
+
+	const real = { start: -2, end: 2 },
+		imag = { start: -2, end: 2 };
+	let colors = [],
+		width = canvas.width,
+		height = canvas.height;
+	var color,
+		complex,
+		red = vec4(0.8, 0, 0, 1),
+		green = vec4(0, 1, 0, 1),
+		blue = vec4(0, 0, 1, 1);
+
+	for (let p = 0; p <= width; p++) {
+		for (let q = 0; q <= height; q++) {
+			complex = {
+				x: map_point(
+					vec2(0, 0),
+					vec2(width, 0),
+					vec2(real.start, 0),
+					vec2(real.end, 0),
+					vec2(p, 0)
+				)[0],
+				y: map_point(
+					vec2(0, 0),
+					vec2(0, height),
+					vec2(0, imag.start),
+					vec2(0, imag.end),
+					vec2(0, q)
+				)[1],
+			};
+			const escapetime = mandelbrot_set(complex);
+			let new_complex = {
+				nx: map_point(
+					vec2(real.start, 0),
+					vec2(real.end, 0),
+					vec2(-1, 0),
+					vec2(1, 0),
+					vec2(complex.x, 0)
+				)[0],
+				ny: map_point(
+					vec2(0, imag.start),
+					vec2(0, imag.end),
+					vec2(0, -1),
+					vec2(0, 1),
+					vec2(0, complex.y)
+				)[1],
+			};
+
+			level.push(vec2(new_complex.nx, new_complex.ny));
+
+			if (escapetime == MAX_ITERATION) {
+				color = blue;
+			} else if (escapetime == 1) {
+				color = red;
+			} else {
+				color = map_point(0, MAX_ITERATION / 4, red, green, escapetime);
+			}
+			colors.push(color);
 		}
 	}
 
-	draw();
+	gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+	gl.bufferData(gl.ARRAY_BUFFER, flatten(level), gl.STATIC_DRAW);
+
+	// // Associate out shader variables with our data buffer
+	let vPosition = gl.getAttribLocation(program, "vPosition");
+	gl.vertexAttribPointer(vPosition, 2, gl.FLOAT, false, 0, 0);
+	gl.enableVertexAttribArray(vPosition);
+	// //colors
+	gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+	gl.bufferData(gl.ARRAY_BUFFER, flatten(colors), gl.STATIC_DRAW);
+
+	// // Associate out shader variables with our data buffer
+	let vColorPosition = gl.getAttribLocation(program, "vColor");
+	gl.vertexAttribPointer(vColorPosition, 4, gl.FLOAT, false, 0, 0);
+	gl.enableVertexAttribArray(vColorPosition);
+
+	render();
 };
 
 function square(z) {
@@ -33,32 +105,37 @@ function norm(z) {
 	return Math.sqrt(z[0] ** 2 + z[1] ** 2);
 }
 
-function mandelbrot_set(c, MAX_ITTER = 100) {
+function mandelbrot_set(c) {
+	c = vec2(c.x, c.y);
 	var count = 0,
 		z = vec2(0.0, 0.0);
-	while (norm(z) <= 2 && count <= MAX_ITTER) {
+	do {
 		z = add(square(z), c);
 		count++;
-	}
-	if (norm(z) > 2) {
-		return vec2(c);
-	} else {
-		return vec2(0.0, 0.0);
-	}
+	} while (norm(z) <= 2 && count <= MAX_ITERATION);
+
+	return count;
 }
 
-var vSHADER = `attribute vec2 pos;
-	varying vec2 _pos;
-	
-	void main() {
-		gl_Position = vec4(_pos = pos, 0.0, 1.0);
-	}`,
-	fSHADER = `precision highp float;
-	varying vec2 _pos;
+var vSHADER = `
+			attribute vec2 vPosition;
+			attribute vec4 vColor;
+			varying vec4 g1_vColor;
 
-	void main() {
-		gl_FragColor = vec4(_pos, 1.0, 0.0);
-	}`;
+			void main(){
+				gl_Position = vec4(vPosition, 0.0, 1.0);
+				g1_vColor = vColor;
+				gl_PointSize = 1.0;
+			}`,
+	fSHADER = `
+			precision highp float;
+			uniform vec4 g1_vColor;
+			// varying vec4 fragColor;
+	
+			void main()
+			{
+				gl_FragColor = g1_vColor;
+			}`;
 
 function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
 	var vsh = gl.createShader(gl.VERTEX_SHADER);
@@ -67,12 +144,14 @@ function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
 	if (!gl.getShaderParameter(vsh, gl.COMPILE_STATUS)) {
 		throw "Error in vertex shader:  " + gl.getShaderInfoLog(vsh);
 	}
+
 	var fsh = gl.createShader(gl.FRAGMENT_SHADER);
 	gl.shaderSource(fsh, fragmentShaderSource);
 	gl.compileShader(fsh);
 	if (!gl.getShaderParameter(fsh, gl.COMPILE_STATUS)) {
 		throw "Error in fragment shader:  " + gl.getShaderInfoLog(fsh);
 	}
+
 	var prog = gl.createProgram();
 	gl.attachShader(prog, vsh);
 	gl.attachShader(prog, fsh);
@@ -80,30 +159,63 @@ function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
 	if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
 		throw "Link error in program:  " + gl.getProgramInfoLog(prog);
 	}
+
 	return prog;
 }
-
-function draw() {
-	gl.clearColor(0.0, 0.0, 0.0, 1.0);
-
-	gl.useProgram(program);
-
-	console.log(level);
-
-	var program = createProgram(gl, vSHADER, fSHADER);
-
-	var vBuffer = gl.createBuffer();
-	gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
-	gl.bufferData(gl.ARRAY_BUFFER, flatten(level), gl.STATIC_DRAW);
-
-	var vPosition = gl.getAttribLocation(program, "pos");
-	gl.vertexAttribPointer(vPosition, 2, gl.FLOAT, false, 0, 0);
-	gl.enableVertexAttribArray(vPosition);
-
-	render();
-}
-
 function render() {
 	gl.clear(gl.COLOR_BUFFER_BIT);
-	gl.drawArrays(gl.TRIANGLE, 0, level.length);
+	gl.drawArrays(gl.POINTS, 0, level.length);
+}
+
+function map_point(P, Q, A, B, X) {
+	/*
+    This Function maps X from PQ to AB
+    where 
+    P, Q = Two points on a line segment
+    X = affine combination of P, Q such that X = αQ + (1 − α)P such that |P X| : |XQ| = α : (1 − α) , 0 ≤ α ≤ 1
+    A, B = colors at P, and Q respectively
+    It returns Y which is the mapping of PQ to AB
+    types:
+    X, P, Q = vec2
+    A, B, Y = vec4
+    */
+	var PX = 0;
+	var PQ = 0;
+	let PX_dist = 0;
+	let PQ_dist = 0;
+	// for (let i = 0; i < P.length; i++) {
+	// 	PX += (P[i] - X[i]) ** 2; //calculates square to calculare distance
+
+	// 	PQ += (P[i] - Q[i]) ** 2; //calculates square to calculare distance
+	// }
+
+	// PX_dist = Math.sqrt(PX); //distance between P and X
+	// PQ_dist = Math.sqrt(PQ); //distance between P and Q
+
+	// const alpha = PX_dist / PQ_dist;
+	//checks if it's a vector
+	// if (isVector(P)) {
+	// 	for (let i = 0; i < P.length; i++) {
+	// 		PX += (P[i] - X[i]) ** 2; //calculates square to calculare distance
+
+	// 		PQ += (P[i] - Q[i]) ** 2; //calculates square to calculare distance
+	// 	}
+
+	// 	PX_dist = Math.sqrt(PX); //distance between P and X
+	// 	PQ_dist = Math.sqrt(PQ); //distance between P and Q
+
+	// 	alpha = PX_dist / PQ_dist;
+	// } else {
+	// 	//if it's not a point
+	// 	PX_dist = X - P;
+	// 	PQ_dist = Q - P;
+	// 	alpha = PX_dist / PQ_dist;
+	// }
+	PX_dist = X - P;
+	PQ_dist = Q - P;
+	const alpha = PX_dist / PQ_dist;
+	//mapped point on the given A B range
+	let Y = mix(A, B, alpha);
+
+	return Y;
 }
