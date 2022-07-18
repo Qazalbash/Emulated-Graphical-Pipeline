@@ -15,7 +15,7 @@ var vSHADER = `attribute vec2 vPosition;
 				gl_PointSize = 1.0;
 			}`,
 	fSHADER = `precision highp float;
-			uniform vec4 colors;
+			varying vec4 colors;
 	
 			void main()
 			{
@@ -68,27 +68,9 @@ function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
 }
 
 function map_point(P, Q, A, B, X) {
-	var PX_dist = 0,
-		PQ_dist = 0,
-		alpha;
-	if (isVector(P)) {
-		var PX = 0,
-			PQ = 0;
-		for (let i = 0; i < P.length; i++) {
-			PX += (P[i] - X[i]) ** 2;
-
-			PQ += (P[i] - Q[i]) ** 2;
-		}
-
-		PX_dist = Math.sqrt(PX);
-		PQ_dist = Math.sqrt(PQ);
-
+	var PX_dist = X - P,
+		PQ_dist = Q - P,
 		alpha = PX_dist / PQ_dist;
-	} else {
-		PX_dist = X - P;
-		PQ_dist = Q - P;
-		alpha = PX_dist / PQ_dist;
-	}
 
 	return mix(A, B, alpha);
 }
@@ -143,7 +125,7 @@ window.onload = function init() {
 
 			level.push(vec2(z_.x, z_.y));
 
-			if (escapetime == MAX_ITERATION) {
+			if (escapetime == MAX_ITERATION + 1) {
 				color = blue;
 			} else if (escapetime == 1) {
 				color = red;
