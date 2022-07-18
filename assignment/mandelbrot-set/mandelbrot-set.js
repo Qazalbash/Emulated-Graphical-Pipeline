@@ -26,17 +26,25 @@ function norm(z) {
 	return Math.sqrt(z.x * z.x + z.y * z.y);
 }
 
-function mandelbrot_set(c) {
+function arg(z) {
+	return Math.atan2(z.y, z.x);
+}
+
+function mandelbrot_set(c, n) {
 	let count = 0,
-		z = { x: 0.0, y: 0.0 },
-		z_ = { x: 0.0, y: 0.0 };
+		r = 0,
+		t = 0,
+		z = { x: 0.0, y: 0.0 };
+
 	do {
-		z_.x = z.x * z.x - z.y * z.y + c.x;
-		z_.y = 2 * z.x * z.y + c.y;
-		z.x = z_.x;
-		z.y = z_.y;
+		z.x = Math.pow(r, n) * Math.cos(n * t) + c.x;
+		z.y = Math.pow(r, n) * Math.sin(n * t) + c.y;
+
+		r = norm(z);
+		t = arg(z);
+
 		count++;
-	} while (norm(z) <= 2 && count <= MAX_ITERATION);
+	} while (r <= 2 && count <= MAX_ITERATION);
 
 	return count;
 }
@@ -76,10 +84,7 @@ function map_point(P, Q, A, B, X) {
 }
 
 function isVector(v) {
-	if (v.type == "vec2" || v.type == "vec3" || v.type == "vec4") {
-		return true;
-	}
-	return false;
+	return v.type == "vec2" || v.type == "vec3" || v.type == "vec4";
 }
 
 window.onload = function init() {
@@ -91,17 +96,14 @@ window.onload = function init() {
 	}
 
 	gl.viewport(0, 0, canvas.width, canvas.height);
-	gl.clearColor(1.0, 1.0, 1.0, 1.0);
 
-	var program = createProgram(gl, vSHADER, fSHADER);
-	gl.useProgram(program);
+	draw(2, canvas.width, canvas.height);
+};
 
-	const real = { start: -2, end: 2 },
-		imag = { start: -2, end: 2 };
+function draw(n = 2, width = 512, height = 512) {
+	const range = { start: -2, end: 2 };
 
-	let colors = [],
-		width = canvas.width,
-		height = canvas.height;
+	let colors = [];
 
 	var color,
 		z,
@@ -109,32 +111,35 @@ window.onload = function init() {
 		green = vec4(0, 1, 0, 1),
 		blue = vec4(0, 0, 1, 1);
 
+	gl.clearColor(0.0, 0.0, 0.0, 1.0);
 	for (let p = 0; p <= width; p++) {
 		for (let q = 0; q <= height; q++) {
 			z = {
-				x: map_point(0, width, real.start, real.end, p),
-				y: map_point(0, height, imag.start, imag.end, q),
+				x: map_point(0, width, range.start, range.end, p),
+				y: map_point(0, height, range.start, range.end, q),
 			};
 
-			const escapetime = mandelbrot_set(z);
-
 			let z_ = {
-				x: map_point(real.start, real.end, -1, 1, z.x),
-				y: map_point(imag.start, imag.end, -1, 1, z.y),
+				x: map_point(range.start, range.end, -1, 1, z.x),
+				y: map_point(range.start, range.end, -1, 1, z.y),
 			};
 
 			level.push(vec2(z_.x, z_.y));
 
+			const escapetime = mandelbrot_set(z, n);
+
 			if (escapetime == MAX_ITERATION + 1) {
 				color = blue;
-			} else if (escapetime == 1) {
-				color = red;
 			} else {
 				color = map_point(0, MAX_ITERATION / 4, red, green, escapetime);
 			}
+
 			colors.push(color);
 		}
 	}
+
+	var program = createProgram(gl, vSHADER, fSHADER);
+	gl.useProgram(program);
 
 	gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
 	gl.bufferData(gl.ARRAY_BUFFER, flatten(level), gl.STATIC_DRAW);
@@ -153,7 +158,7 @@ window.onload = function init() {
 	gl.enableVertexAttribArray(vColorPosition);
 
 	render();
-};
+}
 
 function render() {
 	gl.clear(gl.COLOR_BUFFER_BIT);
