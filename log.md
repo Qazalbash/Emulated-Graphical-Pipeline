@@ -1,3 +1,19 @@
+# July 17, 2022
+
+The code got completed. It was a pretty hard journey.
+
+# July 15, 2022
+
+I had meeting with Dr Waqar, he suggested me to re-write the code.
+
+# July 14, 2022
+
+The shader problem almost got solve.
+
+# July 13, 2022
+
+The shaders had some problems, therefore I look into it.
+
 # July 8, 2022
 
 I was out of patience with the error and that was taking too much time. I asked Dr Waqar, but the eid has come so the process is halt hopefully he will answer the question after Eid.
