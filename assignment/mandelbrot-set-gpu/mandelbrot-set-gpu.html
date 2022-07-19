@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <title>Mandelbrot Set</title>
+        <script id="vShader" type="x-shader/x-vertex">
+            #version 300 es
+
+            in vec2 vPosition;
+            in vec4 vColor;
+            out vec4 colors;
+
+            void main() {
+                gl_Position = vec4(vPosition, 0.0, 1.0);
+                colors = vColor;
+                gl_PointSize = 1.0;
+            }
+        </script>
+        <script id="fShader" type="x-shader/x-vertex">
+            #version 300 es
+
+            precision highp float;
+            in vec4 colors;
+
+            void main() {
+            	gl_FragColor = colors;
+            }
+        </script>
+        <script type="text/javascript" src="../Common/webgl-utils.js"></script>
+        <script type="text/javascript" src="mandelbrot-set-gpu.js"></script>
+        <script src="http://interactivecomputergraphics.com/8E/Code%20update/Common/initShadersES6.js"></script>
+        <script src="http://interactivecomputergraphics.com/8E/Code%20update/Common/MVES6.js"></script>
+    </head>
+
+    <body>
+        <canvas id="set" width="512" height="512">
+            Oops ... your browser doesn't support the HTML5 canvas element
+        </canvas>
+    </body>
+</html>
