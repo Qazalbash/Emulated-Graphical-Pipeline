@@ -1,4 +1,10 @@
-# June 29, 2022
+# July 19, 2022
+
+The madelbrot set got completed. All points and colors were generated on cpu. The next task assigned is to generate all those stuff on GPU.
+
+# July 14, 2022
+
+We dicussed the issues I was facing in the generation of mandelbrot set. He later said to re-write the whole code.
 
 # June 23, 2022
 
