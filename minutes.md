@@ -1,3 +1,7 @@
+# July 21, 2022
+
+The error was due to something that Dr Waqar could not understand. He suggested some changes to the code.
+
 # July 19, 2022
 
 The madelbrot set got completed. All points and colors were generated on cpu. The next task assigned is to generate all those stuff on GPU.
