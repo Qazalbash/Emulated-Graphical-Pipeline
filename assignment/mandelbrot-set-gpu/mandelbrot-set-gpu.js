@@ -6,10 +6,10 @@ const MAX_ITERATION = 100;
 
 window.onload = function init() {
     var canvas = document.getElementById("set");
-    gl = WebGLUtils.setupWebGL(canvas);
+    gl = canvas.getContext("webgl2");
 
     if (!gl) {
-        alert("WebGL is not available");
+        alert("WebGL2.0 is not available");
     }
 
     gl.viewport(0, 0, canvas.width, canvas.height);
@@ -41,5 +41,5 @@ function render() {
     gl.uniform1f(excape_max, MAX_ITERATION);
 
     gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.drawArrays(gl.POINTS, 0, vertices.length);
+    gl.drawArrays(gl.TRIANGLE_FAN, 0, vertices.length);
 }
