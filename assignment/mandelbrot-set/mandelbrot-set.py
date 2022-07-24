@@ -24,3 +24,4 @@ def plot_mandelbrot(x_min, x_max, y_min, y_max, max_iterations=100):
 
 
 plot_mandelbrot(-2, 2, -2, 2)
+
