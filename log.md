@@ -1,4 +1,24 @@
-# July 17, 2022
+# July 25, 2022
+
+Due to rain Dr Waqar didn't answer my message. I hope every thing is fine on his side.
+
+# July 22, 2022
+
+I solved the problem and the mandelbrot set is being generated on GPU.
+
+# July 21, 2022
+
+Batool helped me to solve that error in time. The error could be solved using the WebGL 2.0. We only have to use the `canvas.getContext("webgl2")`.
+
+# July 20, 2022
+
+The error was still there and no wonder how I manage to solve it, it was there. I asked Batool and Hania and Dr Waqar too to help me in it. Although Dr Waqar said no on the face, but the other two were humble to help me. But it was too late and my shift was about to be over therefore I keep that thing for next day.
+
+# July 19, 2022
+
+There was some error regarding the version of the WebGL.
+
+# July 18, 2022
 
 The code got completed. It was a pretty hard journey.
 
