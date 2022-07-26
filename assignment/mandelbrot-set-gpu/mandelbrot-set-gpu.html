@@ -7,19 +7,19 @@
             #version 300 es
 
             in vec2 vPosition;
-            out vec2 position;
+            out vec2 coordinate;
 
             void main() {
             	gl_PointSize = 1.0;
             	gl_Position = vec4(vPosition, 0.0, 1.0);
-            	position = vPosition;
+            	coordinate = vPosition;
             }
         </script>
         <script id="fShader" type="x-shader/x-vertex">
             #version 300 es
 
             precision highp float;
-            in vec2 position;
+            in vec2 coordinate;
             out vec4 fragColor;
 
             float mag(vec2 v) {
@@ -43,14 +43,14 @@
             }
 
             vec4 map_point(float P, float Q, float R, vec4 A, vec4 B, vec4 C, float X) {
-                float a = (X - Q) * (X - R) / (P - Q) / (P - R);
-                float b = (X - P) * (X - R) / (Q - P) / (Q - R);
-                float c = (X - P) * (X - Q) / (R - P) / (R - Q);
+                float a = (X - Q) * (X - R) / ((P - Q) * (P - R));
+                float b = (X - P) * (X - R) / ((Q - P) * (Q - R));
+                float c = (X - P) * (X - Q) / ((R - P) * (R - Q));
             	return a * A + b * B + c * C;
             }
 
             void main() {
-            	vec2 z = 2.0 * position;
+            	vec2 z = 2.0 * coordinate;
                 float escape_time = mandelbrot_set(z);
 
             	vec4 red = vec4(1.0, 0.0, 0.0, 1.0),

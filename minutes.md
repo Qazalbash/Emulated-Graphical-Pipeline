@@ -1,3 +1,7 @@
+# July 26, 2022
+
+We discussed how I was passing $4$ points and when they come to fragment shader there were ${512}^{2}$. It was due to the rasterization stage in the graphical pipeline. Later in meetings, we discussed about the design of graphical pipeline. He assigned me with new stuff that was regarding to the design of the graphical pipeline.
+
 # July 21, 2022
 
 The error was due to something that Dr Waqar could not understand. He suggested some changes to the code.
