@@ -1,0 +1,28 @@
+Date: July 19, 2022
+
+Type of meeting: Individual meeting.
+
+Attendees: Meesum Ali Qazalbash, Dr Waqar Saleem.
+
+Meeting agenda: Discuss the work done in the last week.
+
+Point discussed: 
+-   The madelbrot set got completed. All points and colors were generated on cpu. We discussed how the points are being generated and how the colors are being generated on cpu.
+
+Action Item:
+-   The next task assigned is to generate all those stuff on GPU.
+
+
+Date: July 21, 2022
+
+Type of meeting: Individual meeting.
+
+Attendees: Meesum Ali Qazalbash, Dr Waqar Saleem.
+
+Meeting agenda: Discuss the work done in the last week.
+
+Point discussed: 
+-   While I was writing code to generate the mandelbort set on gpu, there was an error of version number pf GLSL. I was able to fix it. We discussed how to fix the error.
+
+Action Item:
+-   Error was unable to be fixed. Therefore I looked for help from some seniors, and continue doing my code.

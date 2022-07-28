@@ -1,4 +1,4 @@
-Date: June 10, 2022
+Date: July 14, 2022
 
 Type of meeting: Individual meeting.
 
@@ -7,8 +7,7 @@ Attendees: Meesum Ali Qazalbash, Dr Waqar Saleem.
 Meeting agenda: Discuss the work done in the last week.
 
 Point discussed: 
--	Learning Javascript is not relavent to the research.
--	mantaining the log.md
+-   We dicussed the issues I was facing in the generation of mandelbrot set.
 
 Action Item:
--   Read the book and completly understand the topics.
+-   He said to re-write the whole code.

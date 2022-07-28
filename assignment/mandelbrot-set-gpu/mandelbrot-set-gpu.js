@@ -12,10 +12,10 @@ window.onload = function init() {
     }
 
     vertices = [
-        vec2(-0.5, 0.5),
-        vec2(0.5, 0.5),
-        vec2(0.5, -0.5),
-        vec2(-0.5, -0.5),
+        vec2(-1.0, 1.0),
+        vec2(1.0, 1.0),
+        vec2(1.0, -1.0),
+        vec2(-1.0, -1.0),
     ];
 
     gl.viewport(0, 0, canvas.width, canvas.height);
