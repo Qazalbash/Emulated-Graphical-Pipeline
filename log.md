@@ -1,3 +1,15 @@
+# July 28, 2022
+
+Dr Waqar rechecked the design and made some changes.
+
+# July 27, 2022
+
+Design got almost completed
+
+# July 26, 2022
+
+I started the design of the pipeline.
+
 # July 25, 2022
 
 Due to rain Dr Waqar didn't answer my message. I hope every thing is fine on his side.
