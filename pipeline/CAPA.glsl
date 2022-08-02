@@ -23,25 +23,11 @@ mat3 rotate(float angle, vec3 axis) {
     float x = v.x;
     float y = v.y;
     float z = v.z;
-    return mat3(
-        t * x * x + c,
-        t * x * y + s * z,
-        t * x * z - s * y,
-        t * x * y - s * z,
-        t * y * y + c,
-        t * y * z + s * x,
-        t * x * z + s * y,
-        t * y * z - s * x,
-        t * z * z + c
-    );
+    return mat3(t * x * x + c, t * x * y + s * z, t * x * z - s * y, t * x * y - s * z, t * y * y + c, t * y * z + s * x, t * x * z + s * y, t * y * z - s * x, t * z * z + c);
 }
 
 mat3 scale(float x, float y, float z) {
-    return mat3(
-        x, 0.0, 0.0,
-        0.0, y, 0.0,
-        0.0, 0.0, z
-    );
+    return mat3(x, 0.0, 0.0, 0.0, y, 0.0, 0.0, 0.0, z);
 }
 
 mat3 makeCameraMatrix() {
