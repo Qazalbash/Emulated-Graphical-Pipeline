@@ -11,11 +11,6 @@ in vec2 coordinate;
 
 out vec4 fragColor;
 
-#version 300 es
-
-precision highp float;
-in vec2 coordinate;
-out vec4 fragColor;
 
 float mag(vec2 v) {
     return sqrt(v[0] * v[0] + v[1] * v[1]);
