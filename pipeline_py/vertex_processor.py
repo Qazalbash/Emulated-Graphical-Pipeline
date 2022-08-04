@@ -1,21 +1,23 @@
-import numpy as np
+from glcontext import *
 
 
 class Vertex_Processor:
-
-    def __init__(self, vShader, attribute: dict, uniform: dict) -> None:
+    def __init__(self, gl: GLContext, shader, attribute: dict, uniform: dict) -> None:
+        self.gl = gl
         self.attribute = attribute
         self.uniform = uniform
-        self.vShader = vShader
-        self.transformed_vertices = self.run_vertex_shader()
+        self.shader = shader
+        self.run_vertex_shader()
+
+    def get_attributes(self, index: int):
+        return {name: value[index, :] for name, value in self.attribute.items()}
 
     def run_vertex_shader(self) -> np.ndarray:
-        transformed_vertices = np.array([])
-        vertices = self.attribute["position"]["data"]
+        t_vert = np.array([])
+        vert = self.attribute["position"]
 
-        for vertex in vertices:
-            transformed_vertex = self.vShader(vertex, self.attribute,
-                                              self.uniform)
-            transformed_vertices = np.append(transformed_vertices,
-                                             transformed_vertex)
-        return transformed_vertices.reshape((3, -1))
+        for index in range(len(vert)):
+            transformed_vertex = self.shader(self.get_attributes(index), self.uniform)
+            t_vert = np.append(t_vert, transformed_vertex)
+
+        self.gl.transformed_vertices = t_vert.reshape((3, -1))
