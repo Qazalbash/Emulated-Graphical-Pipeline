@@ -6,16 +6,19 @@ gl.set_clear_color(1.0, 1.0, 1.0, 1.0)
 
 gl.set_uniform("matrix",
                np.array([
-                   [2.0, 0.0, 0.0],
-                   [1.0, 2.0, 3.0],
-                   [1.0, 0.0, 2.0],
+                   [1.0, 1.0, 1.0],
+                   [1.0, 1.0, 1.0],
+                   [1.0, 1.0, 1.0],
                ]))
 
-gl.set_attributes("position", np.array([
-    [1.0, 1.0],
-    [1.0, 0.0],
-    [0.0, 1.0],
-]))
+gl.set_attributes(
+    "position",
+    np.array([
+        [0.02, 0.01],
+        [0.02, 0.02],
+        [0.05, 0.02],
+        [0.03, 0.03],
+    ]))
 
 gl.set_attributes(
     "color",
@@ -23,9 +26,10 @@ gl.set_attributes(
         [0.0, 0.0, 1.0, 0.0],
         [0.0, 1.0, 0.0, 0.0],
         [1.0, 0.0, 1.0, 0.0],
+        [1.0, 0.0, 1.0, 0.0],
     ]))
 
-gl.set_count(3)
+gl.set_count(4)
 
 
 # dumy vertex shader
@@ -34,7 +38,7 @@ def vertex_shader(attribute: dict, uniform: dict) -> np.ndarray:
     vertex = attribute["position"]
     for _ in range(3 - vertex.shape[0]):
         vertex = np.append(vertex, 0.0)
-    vertex = np.append(np.matmul(matrix, vertex), 0.0)
+    vertex = np.append(np.matmul(matrix, vertex), 1.0)
     return vertex
 
 

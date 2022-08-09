@@ -19,5 +19,7 @@ class Vertex_Processor:
             assert isinstance(pos,
                               np.ndarray), "shader is not returning ndarray"
             assert pos.shape == (4, ), "shader is not returning 4d vector"
+            assert pos[
+                3] != 0.0, "Floating point error, 0.0 can not be assigned as weight"
             positions[index] = pos
         return positions
