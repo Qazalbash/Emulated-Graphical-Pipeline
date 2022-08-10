@@ -4,32 +4,16 @@ gl = GLContext()
 
 gl.set_clear_color(1.0, 1.0, 1.0, 1.0)
 
-gl.set_uniform("matrix",
-               np.array([
-                   [1.0, 1.0, 1.0],
-                   [1.0, 1.0, 1.0],
-                   [1.0, 1.0, 1.0],
-               ]))
+N = 1000
 
-gl.set_attributes(
-    "position",
-    np.array([
-        [0.02, 0.01],
-        [0.02, 0.02],
-        [0.05, 0.02],
-        [0.03, 0.03],
-    ]))
+gl.set_uniform("matrix", np.random.rand(3, 3))
 
-gl.set_attributes(
-    "color",
-    np.array([
-        [0.0, 0.0, 1.0, 0.0],
-        [0.0, 1.0, 0.0, 0.0],
-        [1.0, 0.0, 1.0, 0.0],
-        [1.0, 0.0, 1.0, 0.0],
-    ]))
+gl.set_attributes("position",
+                  np.array([np.random.rand(3, 1) for _ in range(N)]))
 
-gl.set_count(4)
+gl.set_attributes("color", np.array([np.random.rand(4, 4) for _ in range(N)]))
+
+gl.set_count(N)
 
 
 # dumy vertex shader

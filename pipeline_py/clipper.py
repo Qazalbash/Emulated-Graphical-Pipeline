@@ -23,7 +23,6 @@ class Clipper:
         elif self.gl.assembly_scheme == Triangle:
             raise NotImplementedError(
                 "Triangle clipper is not implemented yet")
-
         else:
             raise TypeError(f"{self.gl.assembly_scheme} is an invalid type")
 
