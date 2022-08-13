@@ -17,4 +17,7 @@ assert gl.assembly_scheme is not None, 'can not clip the vertices, assembly sche
 cpa = Clipper(gl)
 
 gl.Position = cpa.run_clipper()
+
+assert gl.zbuffer is not None, "zbuffer is not created, that could cause problem while rasterization"
+
 print(gl.Position)

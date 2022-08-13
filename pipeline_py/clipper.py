@@ -26,4 +26,15 @@ class Clipper:
         else:
             raise TypeError(f"{self.gl.assembly_scheme} is an invalid type")
 
-        return clipped_pos.reshape(-1, 3)
+        zbuffer = np.array(np.array([], dtype=float), dtype=np.ndarray)
+
+        for z in range(0, len(clipped_pos), 3):
+            vecz = np.full((1, 3), clipped_pos[z])
+            normal_vecz = vecz / np.linalg.norm(vecz)
+            zbuffer = np.append(zbuffer, normal_vecz)
+
+        clipped_pos = clipped_pos.reshape(-1, 3)
+        zbuffer = zbuffer.reshape(-1, 3)
+        self.gl.zbuffer = zbuffer
+
+        return clipped_pos
