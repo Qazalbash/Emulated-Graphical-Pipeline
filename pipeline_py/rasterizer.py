@@ -7,5 +7,4 @@ class Rasterizer:
         self.gl = gl
 
     def run_rasterizer(self) -> np.ndarray:
-        # rasterization algorithim in python
         pass

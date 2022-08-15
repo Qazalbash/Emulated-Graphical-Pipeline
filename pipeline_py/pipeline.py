@@ -2,6 +2,8 @@ from app import *
 from clipper import *
 from vertex_processor import *
 
+assert gl.width is not None, "width of the canvas is not set"
+assert gl.height is not None, "height of the canvas is not set"
 assert gl.count > 0, 'Number of rendering elements must be set in gl'
 
 vp = Vertex_Processor(gl)

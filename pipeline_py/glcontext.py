@@ -16,6 +16,8 @@ class GLContext:
         self.PointSize = 1.0
         self.assembly_scheme = None
         self.zbuffer = None
+        self.width = None
+        self.height = None
 
     def set_count(self, count: int) -> None:
         self.count = count
@@ -39,3 +41,7 @@ class GLContext:
         assert type(data) is int or type(data) is float or type(
             data) is np.ndarray, "type of the data should be numpy array"
         self.uniforms[name] = data
+
+    def set_canvas_size(self, width: int, height: int) -> None:
+        self.width = width
+        self.height = height
