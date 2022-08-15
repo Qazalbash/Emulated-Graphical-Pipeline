@@ -15,6 +15,8 @@ gl.set_attributes("color", np.array([np.random.rand(4, 4) for _ in range(N)]))
 
 gl.set_count(N)
 
+gl.set_canvas_size(800, 600)
+
 
 # dumy vertex shader
 def vertex_shader(attribute: dict, uniform: dict) -> np.ndarray:
@@ -27,4 +29,5 @@ def vertex_shader(attribute: dict, uniform: dict) -> np.ndarray:
 
 
 gl.vShader = vertex_shader
+
 gl.assembly_scheme = Point

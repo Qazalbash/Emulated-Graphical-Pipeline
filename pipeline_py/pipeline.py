@@ -1,6 +1,7 @@
 from app import *
 from clipper import *
 from vertex_processor import *
+from rasterizer import *
 
 assert gl.width is not None, "width of the canvas is not set"
 assert gl.height is not None, "height of the canvas is not set"
@@ -22,4 +23,6 @@ gl.Position = cpa.run_clipper()
 
 assert gl.zbuffer is not None, "zbuffer is not created, that could cause problem while rasterization"
 
-print(gl.Position)
+ras = Rasterizer(gl)
+
+ras.run_rasterizer()
