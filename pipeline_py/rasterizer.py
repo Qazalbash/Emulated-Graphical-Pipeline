@@ -7,6 +7,8 @@ class Rasterizer:
         self.gl = gl
 
     def run_rasterizer(self) -> np.ndarray:
-        self.gl.frame_buffer = np.full((self.gl.width, self.gl.height, 4), 1.0)
-        print(self.gl.frame_buffer)
-        print(self.gl.frame_buffer.shape)
+        width, height = self.gl.width, self.gl.height
+        fragments = self.gl.Position + np.array([1.0, -1.0, 0.0], dtype=float)
+        fragments = np.abs(
+            np.array([width / 2.0, height / 2.0, 1.0]) * fragments)
+        return fragments

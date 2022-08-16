@@ -9,7 +9,7 @@ N = 1000
 gl.set_uniform("matrix", np.random.rand(3, 3))
 
 gl.set_attributes("position",
-                  np.array([np.random.rand(3, 1) for _ in range(N)]))
+                  np.array([np.random.rand(3, 1) - 0.5 for _ in range(N)]))
 
 gl.set_attributes("color", np.array([np.random.rand(4, 4) for _ in range(N)]))
 

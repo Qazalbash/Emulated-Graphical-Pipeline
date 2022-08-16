@@ -33,6 +33,9 @@ class Clipper:
             normal_vecz = vecz / np.linalg.norm(vecz)
             zbuffer = np.append(zbuffer, normal_vecz)
 
+        clipped_pos = np.append(clipped_pos,
+                                [1, 1, 0, -1, 1, 0, 1, -1, 0, -1, -1, 0])
+
         clipped_pos = clipped_pos.reshape(-1, 3)
         zbuffer = zbuffer.reshape(-1, 3)
         self.gl.zbuffer = zbuffer
