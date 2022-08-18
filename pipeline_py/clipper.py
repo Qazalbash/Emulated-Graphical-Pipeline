@@ -3,7 +3,6 @@ from primitive import *
 
 
 class Clipper:
-
     def __init__(self, gl: GLContext):
         self.gl = gl
 
@@ -12,41 +11,64 @@ class Clipper:
         return np.apply_along_axis(lambda x: Point(x), 1, positions)
 
     @staticmethod
-    def assemble_lines(positions: np.ndarray, count: int) -> np.ndarray:
-        # needs to implement line assembly
-        positions = positions.reshape(-1, 3, 2)
-        return np.apply_along_axis(lambda x: Line(x[0], x[1]), 1, positions)
-        index = 0
-        primitives = []
-        while index + 1 < count:
-            v0 = positions[index]
-            v1 = positions[index + 1]
-            index += 2
-            primitives.append(Line(v0, v1))
-        return primitives
+    def assemble_lines(positions: np.ndarray) -> np.ndarray:
+        if positions.size % 2:
+            positions = positions[:-1]
+        positions = positions.reshape(-1, 6)
+        return np.apply_along_axis(lambda x: Line(x[:3], x[3:]), 1, positions)
+
+    def assemble_linestrips(self, positions: np.ndarray) -> np.ndarray:
+        line1 = self.assemble_lines(positions)
+        line2 = self.assemble_lines(positions[1:])
+        return np.append(line1, line2, axis=0)
+
+    def assemble_lineloop(self, positions: np.ndarray) -> np.ndarray:
+        strip = self.assemble_linestrips(positions)
+        return np.append(strip, [Line(positions[-1], positions[0])])
 
     @staticmethod
-    def assemble_linestrips(positions: np.ndarray, count: int) -> np.ndarray:
-        index = 0
-        primitives = []
-        while index + 1 < count:
-            v0 = positions[index]
-            index += 1
-            v1 = positions[index]
-            primitives.append(Line(v0, v1))
+    def assemble_triangles(positions: np.ndarray) -> np.ndarray:
+        if positions.size < 9:
+            return np.array([])
+        elif (positions.size / 3) % 3 == 1:
+            positions = positions[:-1]
+        elif (positions.size / 3) % 3 == 2:
+            positions = positions[:-2]
+        positions = positions.reshape(-1, 9)
+        return np.apply_along_axis(
+            lambda x: Triangle(x[:3], x[3:6], x[6:]), 1, positions
+        )
+
+    def assemble_trianglestrip(self, positions: np.ndarray) -> np.ndarray:
+        triangle1 = self.assemble_triangles(positions)
+        triangle2 = self.assemble_triangles(positions[1:])
+        triangle3 = self.assemble_triangles(positions[2:])
+
+        triangle1 = np.append(triangle1, triangle2, axis=0)
+
+        return np.append(triangle1, triangle3, axis=0)
+
+    def assemble_trianglefan(self, positions: np.ndarray) -> np.ndarray:
+        # left
+        if positions.size < 9:
+            return np.array([])
+        pivot = positions[0]
+        fan1 = np.apply_along_axis(
+            lambda x: Triangle(pivot, x[:3], x[3:]), 1, positions[1:].reshape(-1, 6)
+        )
+        fan2 = np.apply_along_axis(
+            lambda x: Triangle(pivot, x[:3], x[3:]), 1, positions[2:].reshape(-1, 6)
+        )
 
     def run_clipper(self):
 
-        weightened_positions = np.apply_along_axis(lambda x: x[:3] / x[3], 1,
-                                                   self.gl.Position)
+        weightened_positions = np.apply_along_axis(
+            lambda x: x[:3] / x[3], 1, self.gl.Position
+        )
 
         positions = weightened_positions[
-            -1.0 <= np.any(weightened_positions) <= 1.0].reshape(-1, 3)
-
-        primitives = []
-
-        count = self.gl.count
-        index = 0
+            -1.0 <= np.any(weightened_positions) <= 1.0
+        ].reshape(-1, 3)
 
         if not (0 < self.gl.assembly_scheme.value < 8):
             raise TypeError("Invalid assembly scheme")
@@ -55,106 +77,19 @@ class Clipper:
             return self.assemble_points(positions)
 
         elif self.gl.assembly_scheme.value == 2:  # lines
-            return self.assemble_lines(positions, self.gl.count)
+            return self.assemble_lines(positions)
 
         elif self.gl.assembly_scheme.value == 3:  # linestrip
-
-            while index + 1 < count:
-
-                v0 = self.gl.Position[index]
-
-                index += 1
-
-                v1 = self.gl.Position[index]
-
-                v0 = v0[:3] / v0[3]
-                v1 = v1[:3] / v1[3]
-
-                if -1.0 <= all(v0) <= 1.0 and -1.0 <= all(v1) <= 1.0:
-                    primitives.append(Line(v0, v1))
+            return self.assemble_linestrips(positions)
 
         elif self.gl.assembly_scheme.value == 4:  # lineloop
-
-            while index + 1 < count:
-
-                v0 = self.gl.Position[index]
-
-                index += 1
-
-                v1 = self.gl.Position[index]
-
-                v0 = v0[:3] / v0[3]
-                v1 = v1[:3] / v1[3]
-
-                if -1.0 <= all(v0) <= 1.0 and -1.0 <= all(v1) <= 1.0:
-                    primitives.append(Line(v0, v1))
-
-            v0 = self.gl.Position[-1]
-            v1 = self.gl.Position[0]
-
-            v0 = v0[:3] / v0[3]
-            v1 = v1[:3] / v1[3]
-
-            if -1.0 <= all(v0) <= 1.0 and -1.0 <= all(v1) <= 1.0:
-                primitives.append(Line(v0, v1))
+            return self.assemble_lineloop(positions)
 
         elif self.gl.assembly_scheme.value == 5:  # triangles
-
-            while index + 2 < count:
-
-                v0 = self.gl.Position[index]
-                v1 = self.gl.Position[index + 1]
-                v2 = self.gl.Position[index + 2]
-
-                index += 3
-
-                v0 = v0[:3] / v0[3]
-                v1 = v1[:3] / v1[3]
-                v2 = v2[:3] / v2[3]
-
-                if -1.0 <= all(v0) <= 1.0 and -1.0 <= all(
-                        v1) <= 1.0 and -1.0 <= all(v2) <= 1.0:
-                    primitives.append(Triangle(v0, v1, v2))
+            return self.assemble_triangles(positions)
 
         elif self.gl.assembly_scheme.value == 6:  # triangle strip
-
-            while index + 2 < count:
-
-                v0 = self.gl.Position[index]
-
-                index += 1
-
-                v1 = self.gl.Position[index]
-                v2 = self.gl.Position[index + 1]
-
-                v0 = v0[:3] / v0[3]
-                v1 = v1[:3] / v1[3]
-                v2 = v2[:3] / v2[3]
-
-                if -1.0 <= all(v0) <= 1.0 and -1.0 <= all(
-                        v1) <= 1.0 and -1.0 <= all(v2) <= 1.0:
-                    primitives.append(Triangle(v0, v1, v2))
+            return self.assemble_trianglestrip(positions)
 
         elif self.gl.assembly_scheme.value == 7:  # triangle fan
-
-            v0 = self.gl.Position[0]
-            v0 = v0[:3] / v0[3]
-            index = 1
-            while not (-1.0 <= all(v0) <= 1.0):
-                v0 = self.gl.Position[index]
-                v0 = v0[:3] / v0[3]
-                index += 1
-
-            while index + 1 < count:
-                v1 = self.gl.Position[index]
-                index += 1
-                v2 = self.gl.Position[index]
-
-                v1 = v1[:3] / v1[3]
-                v2 = v2[:3] / v2[3]
-
-                if -1.0 <= all(v0) <= 1.0 and -1.0 <= all(
-                        v1) <= 1.0 and -1.0 <= all(v2) <= 1.0:
-                    primitives.append(Triangle(v0, v1, v2))
-
-        return primitives
+            return self.assemble_trianglefan(positions)

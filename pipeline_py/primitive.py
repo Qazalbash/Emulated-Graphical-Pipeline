@@ -4,7 +4,6 @@ import numpy as np
 
 
 class Primitive:
-
     def __init__(self, *vertices: np.ndarray) -> None:
         pass
 
@@ -17,21 +16,22 @@ class Primitive:
 
 
 class Point(Primitive):
-
     def __init__(self, a: np.array | Optional[int | float]) -> None:
         self.vertices = a
 
 
 class Line(Primitive):
-
-    def __init__(self, a: np.array | Optional[int | float],
-                 b: np.array | Optional[int | float]) -> None:
+    def __init__(
+        self, a: np.array | Optional[int | float], b: np.array | Optional[int | float]
+    ) -> None:
         self.vertices = np.array([a, b])
 
 
 class Triangle(Primitive):
-
-    def __init__(self, a: np.array | Optional[int | float],
-                 b: np.array | Optional[int | float],
-                 c: np.array | Optional[int | float]) -> None:
+    def __init__(
+        self,
+        a: np.array | Optional[int | float],
+        b: np.array | Optional[int | float],
+        c: np.array | Optional[int | float],
+    ) -> None:
         self.vertices = np.array([a, b, c])

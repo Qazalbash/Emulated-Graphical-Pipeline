@@ -5,22 +5,27 @@ from rasterizer import *
 
 assert gl.width is not None, "width of the canvas is not set"
 assert gl.height is not None, "height of the canvas is not set"
-assert gl.count > 0, 'Number of rendering elements must be set in gl'
+assert gl.count > 0, "Number of rendering elements must be set in gl"
 
 vp = Vertex_Processor(gl)
 pos = vp.run_vertex_shader()
 
-assert isinstance(
-    pos, np.ndarray) and len(pos) == gl.count, 'Bad result from vertex shader'
+assert (
+    isinstance(pos, np.ndarray) and len(pos) == gl.count
+), "Bad result from vertex shader"
 
 gl.Position = pos
 
-assert gl.assembly_scheme is not None, 'can not clip the vertices, assembly scheme is not defined.'
+assert (
+    gl.assembly_scheme is not None
+), "can not clip the vertices, assembly scheme is not defined."
 
 cpa = Clipper(gl)
 
 gl.Position = cpa.run_clipper()
-print(gl.Position)
+for i in gl.Position:
+    print(i)
+    # print(type(i))
 # assert gl.zbuffer is not None, "zbuffer is not created, that could cause problem while rasterization"
 
 ras = Rasterizer(gl)
