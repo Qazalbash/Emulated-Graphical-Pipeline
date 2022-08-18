@@ -7,7 +7,41 @@ class Clipper:
     def __init__(self, gl: GLContext):
         self.gl = gl
 
+    @staticmethod
+    def assemble_points(positions: np.ndarray) -> np.ndarray:
+        return np.apply_along_axis(lambda x: Point(x), 1, positions)
+
+    @staticmethod
+    def assemble_lines(positions: np.ndarray, count: int) -> np.ndarray:
+        # needs to implement line assembly
+        positions = positions.reshape(-1, 3, 2)
+        return np.apply_along_axis(lambda x: Line(x[0], x[1]), 1, positions)
+        index = 0
+        primitives = []
+        while index + 1 < count:
+            v0 = positions[index]
+            v1 = positions[index + 1]
+            index += 2
+            primitives.append(Line(v0, v1))
+        return primitives
+
+    @staticmethod
+    def assemble_linestrips(positions: np.ndarray, count: int) -> np.ndarray:
+        index = 0
+        primitives = []
+        while index + 1 < count:
+            v0 = positions[index]
+            index += 1
+            v1 = positions[index]
+            primitives.append(Line(v0, v1))
+
     def run_clipper(self):
+
+        weightened_positions = np.apply_along_axis(lambda x: x[:3] / x[3], 1,
+                                                   self.gl.Position)
+
+        positions = weightened_positions[
+            -1.0 <= np.any(weightened_positions) <= 1.0].reshape(-1, 3)
 
         primitives = []
 
@@ -18,31 +52,10 @@ class Clipper:
             raise TypeError("Invalid assembly scheme")
 
         elif self.gl.assembly_scheme.value == 1:  # points
-
-            while index < count:
-                v = self.gl.Position[index]
-
-                index += 1
-
-                v = v[:3] / v[3]
-
-                if -1.0 <= all(v) <= 1.0:
-                    primitives.append(Point(v))
+            return self.assemble_points(positions)
 
         elif self.gl.assembly_scheme.value == 2:  # lines
-
-            while index + 1 < count:
-
-                v0 = self.gl.Position[index]
-                v1 = self.gl.Position[index + 1]
-
-                index += 2
-
-                v0 = v0[:3] / v0[3]
-                v1 = v1[:3] / v1[3]
-
-                if -1.0 <= all(v0) <= 1.0 and -1.0 <= all(v1) <= 1.0:
-                    primitives.append(Line(v0, v1))
+            return self.assemble_lines(positions, self.gl.count)
 
         elif self.gl.assembly_scheme.value == 3:  # linestrip
 
@@ -105,7 +118,7 @@ class Clipper:
 
         elif self.gl.assembly_scheme.value == 6:  # triangle strip
 
-            while index < count:
+            while index + 2 < count:
 
                 v0 = self.gl.Position[index]
 
@@ -127,12 +140,12 @@ class Clipper:
             v0 = self.gl.Position[0]
             v0 = v0[:3] / v0[3]
             index = 1
-            while -1.0 <= all(v0) <= 1.0:
+            while not (-1.0 <= all(v0) <= 1.0):
                 v0 = self.gl.Position[index]
                 v0 = v0[:3] / v0[3]
                 index += 1
 
-            while index < count:
+            while index + 1 < count:
                 v1 = self.gl.Position[index]
                 index += 1
                 v2 = self.gl.Position[index]

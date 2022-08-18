@@ -4,7 +4,7 @@ gl = GLContext()
 
 gl.set_clear_color(1.0, 1.0, 1.0, 1.0)
 
-N = 6
+N = 4
 
 # gl.set_uniform("matrix", np.random.rand(3, 3))
 gl.set_uniform("matrix",
@@ -19,8 +19,8 @@ gl.set_attributes(
     "position",
     np.array([
         [1, 1],
-        [0.5, 0.5],
-        [1, 0.4],
+        # [0.5, 0.5],
+        # [1, 0.4],
         [1, -1],
         [-1, -1],
         [-1, 1],
@@ -43,4 +43,4 @@ def vertex_shader(attribute: dict, uniform: dict) -> np.ndarray:
 
 gl.vShader = vertex_shader
 
-gl.assembly_scheme = Scheme.TRIANGLE
+gl.assembly_scheme = Scheme.LINE

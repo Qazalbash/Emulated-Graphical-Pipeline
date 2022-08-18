@@ -20,11 +20,7 @@ assert gl.assembly_scheme is not None, 'can not clip the vertices, assembly sche
 cpa = Clipper(gl)
 
 gl.Position = cpa.run_clipper()
-
-for index, vertex in enumerate(gl.Position):
-    print(index)
-    print(vertex)
-
+print(gl.Position)
 # assert gl.zbuffer is not None, "zbuffer is not created, that could cause problem while rasterization"
 
 ras = Rasterizer(gl)
