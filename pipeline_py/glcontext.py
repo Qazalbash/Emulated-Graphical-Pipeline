@@ -1,6 +1,17 @@
 import numpy as np
 
 from primitive import *
+import enum
+
+
+class Scheme(enum.Enum):
+    POINT = 1
+    LINE = 2
+    LINESTRIP = 3
+    LINELOOP = 4
+    TRIANGLE = 5
+    TRIANGLESTRIP = 6
+    TRIANGLEFAN = 7
 
 
 class GLContext:

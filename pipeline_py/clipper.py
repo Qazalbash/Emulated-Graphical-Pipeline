@@ -8,36 +8,140 @@ class Clipper:
         self.gl = gl
 
     def run_clipper(self):
-        clipped_pos = np.array(np.array([], dtype=float), dtype=np.ndarray)
 
-        if self.gl.assembly_scheme == Point:
-            for vertex in self.gl.Position:
-                vertex = vertex[:3] / vertex[3]
-                if -1.0 <= vertex[0] <= 1.0 and -1.0 <= vertex[
-                        1] <= 1.0 and -1.0 <= vertex[2] <= 1.0:
-                    clipped_pos = np.append(clipped_pos, vertex)
+        primitives = []
 
-        elif self.gl.assembly_scheme == Line:
-            raise NotImplementedError("Line clipper is not implemented yet")
+        count = self.gl.count
+        index = 0
 
-        elif self.gl.assembly_scheme == Triangle:
-            raise NotImplementedError(
-                "Triangle clipper is not implemented yet")
-        else:
-            raise TypeError(f"{self.gl.assembly_scheme} is an invalid type")
+        if not (0 < self.gl.assembly_scheme.value < 8):
+            raise TypeError("Invalid assembly scheme")
 
-        zbuffer = np.array(np.array([], dtype=float), dtype=np.ndarray)
+        elif self.gl.assembly_scheme.value == 1:  # points
 
-        for z in range(0, len(clipped_pos), 3):
-            vecz = np.full((1, 3), clipped_pos[z])
-            normal_vecz = vecz / np.linalg.norm(vecz)
-            zbuffer = np.append(zbuffer, normal_vecz)
+            while index < count:
+                v = self.gl.Position[index]
 
-        clipped_pos = np.append(clipped_pos,
-                                [1, 1, 0, -1, 1, 0, 1, -1, 0, -1, -1, 0])
+                index += 1
 
-        clipped_pos = clipped_pos.reshape(-1, 3)
-        zbuffer = zbuffer.reshape(-1, 3)
-        self.gl.zbuffer = zbuffer
+                v = v[:3] / v[3]
 
-        return clipped_pos
+                if -1.0 <= all(v) <= 1.0:
+                    primitives.append(Point(v))
+
+        elif self.gl.assembly_scheme.value == 2:  # lines
+
+            while index + 1 < count:
+
+                v0 = self.gl.Position[index]
+                v1 = self.gl.Position[index + 1]
+
+                index += 2
+
+                v0 = v0[:3] / v0[3]
+                v1 = v1[:3] / v1[3]
+
+                if -1.0 <= all(v0) <= 1.0 and -1.0 <= all(v1) <= 1.0:
+                    primitives.append(Line(v0, v1))
+
+        elif self.gl.assembly_scheme.value == 3:  # linestrip
+
+            while index + 1 < count:
+
+                v0 = self.gl.Position[index]
+
+                index += 1
+
+                v1 = self.gl.Position[index]
+
+                v0 = v0[:3] / v0[3]
+                v1 = v1[:3] / v1[3]
+
+                if -1.0 <= all(v0) <= 1.0 and -1.0 <= all(v1) <= 1.0:
+                    primitives.append(Line(v0, v1))
+
+        elif self.gl.assembly_scheme.value == 4:  # lineloop
+
+            while index + 1 < count:
+
+                v0 = self.gl.Position[index]
+
+                index += 1
+
+                v1 = self.gl.Position[index]
+
+                v0 = v0[:3] / v0[3]
+                v1 = v1[:3] / v1[3]
+
+                if -1.0 <= all(v0) <= 1.0 and -1.0 <= all(v1) <= 1.0:
+                    primitives.append(Line(v0, v1))
+
+            v0 = self.gl.Position[-1]
+            v1 = self.gl.Position[0]
+
+            v0 = v0[:3] / v0[3]
+            v1 = v1[:3] / v1[3]
+
+            if -1.0 <= all(v0) <= 1.0 and -1.0 <= all(v1) <= 1.0:
+                primitives.append(Line(v0, v1))
+
+        elif self.gl.assembly_scheme.value == 5:  # triangles
+
+            while index + 2 < count:
+
+                v0 = self.gl.Position[index]
+                v1 = self.gl.Position[index + 1]
+                v2 = self.gl.Position[index + 2]
+
+                index += 3
+
+                v0 = v0[:3] / v0[3]
+                v1 = v1[:3] / v1[3]
+                v2 = v2[:3] / v2[3]
+
+                if -1.0 <= all(v0) <= 1.0 and -1.0 <= all(
+                        v1) <= 1.0 and -1.0 <= all(v2) <= 1.0:
+                    primitives.append(Triangle(v0, v1, v2))
+
+        elif self.gl.assembly_scheme.value == 6:  # triangle strip
+
+            while index < count:
+
+                v0 = self.gl.Position[index]
+
+                index += 1
+
+                v1 = self.gl.Position[index]
+                v2 = self.gl.Position[index + 1]
+
+                v0 = v0[:3] / v0[3]
+                v1 = v1[:3] / v1[3]
+                v2 = v2[:3] / v2[3]
+
+                if -1.0 <= all(v0) <= 1.0 and -1.0 <= all(
+                        v1) <= 1.0 and -1.0 <= all(v2) <= 1.0:
+                    primitives.append(Triangle(v0, v1, v2))
+
+        elif self.gl.assembly_scheme.value == 7:  # triangle fan
+
+            v0 = self.gl.Position[0]
+            v0 = v0[:3] / v0[3]
+            index = 1
+            while -1.0 <= all(v0) <= 1.0:
+                v0 = self.gl.Position[index]
+                v0 = v0[:3] / v0[3]
+                index += 1
+
+            while index < count:
+                v1 = self.gl.Position[index]
+                index += 1
+                v2 = self.gl.Position[index]
+
+                v1 = v1[:3] / v1[3]
+                v2 = v2[:3] / v2[3]
+
+                if -1.0 <= all(v0) <= 1.0 and -1.0 <= all(
+                        v1) <= 1.0 and -1.0 <= all(v2) <= 1.0:
+                    primitives.append(Triangle(v0, v1, v2))
+
+        return primitives

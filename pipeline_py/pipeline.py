@@ -21,8 +21,13 @@ cpa = Clipper(gl)
 
 gl.Position = cpa.run_clipper()
 
-assert gl.zbuffer is not None, "zbuffer is not created, that could cause problem while rasterization"
+for index, vertex in enumerate(gl.Position):
+    print(index)
+    print(vertex)
+
+# assert gl.zbuffer is not None, "zbuffer is not created, that could cause problem while rasterization"
 
 ras = Rasterizer(gl)
 
-ras.run_rasterizer()
+# raster = ras.run_rasterizer()
+# print(raster)
