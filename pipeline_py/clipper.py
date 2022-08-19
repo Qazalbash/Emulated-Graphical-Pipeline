@@ -8,14 +8,16 @@ class Clipper:
 
     @staticmethod
     def assemble_points(positions: np.ndarray) -> np.ndarray:
-        return np.apply_along_axis(lambda x: Point(x), 1, positions)
+        return positions
+        # return np.apply_along_axis(lambda x: Point(x), 1, positions)
 
     @staticmethod
     def assemble_lines(positions: np.ndarray) -> np.ndarray:
         if positions.size % 2:
             positions = positions[:-1]
-        positions = positions.reshape(-1, 6)
-        return np.apply_along_axis(lambda x: Line(x[:3], x[3:]), 1, positions)
+        positions = positions.reshape(-1, 2, 3)
+        return positions
+        # return np.apply_along_axis(lambda x: x[:3], x[3:], 1, positions)
 
     def assemble_linestrips(self, positions: np.ndarray) -> np.ndarray:
         line1 = self.assemble_lines(positions)
@@ -24,7 +26,8 @@ class Clipper:
 
     def assemble_lineloop(self, positions: np.ndarray) -> np.ndarray:
         strip = self.assemble_linestrips(positions)
-        return np.append(strip, [Line(positions[-1], positions[0])])
+        strip = np.append(strip, [positions[-1], positions[0]])
+        return strip.reshape(-1, 2, 3)
 
     @staticmethod
     def assemble_triangles(positions: np.ndarray) -> np.ndarray:
@@ -34,10 +37,11 @@ class Clipper:
             positions = positions[:-1]
         elif (positions.size / 3) % 3 == 2:
             positions = positions[:-2]
-        positions = positions.reshape(-1, 9)
-        return np.apply_along_axis(
-            lambda x: Triangle(x[:3], x[3:6], x[6:]), 1, positions
-        )
+        positions = positions.reshape(-1, 3, 3)
+        return positions
+        # return np.apply_along_axis(
+        #     lambda x: Triangle(x[:3], x[3:6], x[6:]), 1, positions
+        # )
 
     def assemble_trianglestrip(self, positions: np.ndarray) -> np.ndarray:
         triangle1 = self.assemble_triangles(positions)
@@ -48,17 +52,23 @@ class Clipper:
 
         return np.append(triangle1, triangle3, axis=0)
 
-    def assemble_trianglefan(self, positions: np.ndarray) -> np.ndarray:
-        # left
+    @staticmethod
+    def assemble_trianglefan(positions: np.ndarray) -> np.ndarray:
+
         if positions.size < 9:
             return np.array([])
-        pivot = positions[0]
-        fan1 = np.apply_along_axis(
-            lambda x: Triangle(pivot, x[:3], x[3:]), 1, positions[1:].reshape(-1, 6)
-        )
-        fan2 = np.apply_along_axis(
-            lambda x: Triangle(pivot, x[:3], x[3:]), 1, positions[2:].reshape(-1, 6)
-        )
+
+        pivot = np.transpose(positions[0])
+
+        positions1 = positions[1:-1]
+        positions2 = positions[2:]
+        positions = np.append(positions1, positions2, axis=1)
+        positions = np.apply_along_axis(lambda x: np.append(x, pivot), 1, positions)
+        return positions.reshape(-1, 3, 3)
+
+        # return np.apply_along_axis(
+        #     lambda x: Triangle(pivot, x[:3], x[3:]), 1, positions
+        # )
 
     def run_clipper(self):
 

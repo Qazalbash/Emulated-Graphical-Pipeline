@@ -23,12 +23,11 @@ assert (
 cpa = Clipper(gl)
 
 gl.Position = cpa.run_clipper()
-for i in gl.Position:
-    print(i)
-    # print(type(i))
+
+
 # assert gl.zbuffer is not None, "zbuffer is not created, that could cause problem while rasterization"
 
-ras = Rasterizer(gl)
+# ras = Rasterizer(gl)
 
 # raster = ras.run_rasterizer()
 # print(raster)
