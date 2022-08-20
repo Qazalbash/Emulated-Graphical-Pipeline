@@ -4,19 +4,79 @@ from glcontext import *
 class Rasterizer:
     def __init__(self, gl: GLContext) -> None:
         self.gl = gl
+        self.width = gl.width
+        self.height = gl.height
+
+    def gen_fragment(self, v: Vertex | np.ndarray) -> None:
+        if isinstance(v, Vertex):
+            v.fragment = np.array(
+                [
+                    (self.width * abs(v[0] + 1.0)) / 2.0,
+                    (self.height * abs(v[1] - 1.0)) / 2.0,
+                ],
+                dtype=int,
+            )
+        elif isinstance(v, np.ndarray):
+            for i in range(v.size):
+                v[i].fragment = np.array(
+                    [
+                        (self.width * abs(v[i][0] + 1.0)) / 2.0,
+                        (self.height * abs(v[i][1] - 1.0)) / 2.0,
+                    ],
+                    dtype=int,
+                )
+
+    def raster_points(self):
+        np.vectorize(self.gen_fragment)(self.gl.Position)
+        self.raster = self.gl.Position
+        return self.raster
+
+    def raster_lines(self) -> None:
+        raster = np.array([], dtype=Vertex)
+        np.vectorize(self.gen_fragment)(self.gl.Position)
+        positions = np.transpose(self.gl.Position)
+        positions = np.vectorize(self.draw_line)(positions[0], positions[1])
+        for line in positions:
+            raster = np.append(raster, line)
+        return raster
+
+    def raster_triangle(self, v0: np.array, v1: np.array, v2: np.array) -> None:
+
+        s01 = self.draw_line(v0, v1)
+        s12 = self.draw_line(v1, v2)
+        s20 = self.draw_line(v2, v0)
 
     def run_rasterizer(self) -> np.ndarray:
-        width, height = self.gl.width, self.gl.height
-        fragments = self.gl.Position + np.array([1.0, -1.0, 0.0], dtype=float)
-        fragments = np.abs(np.array([width / 2.0, height / 2.0, 1.0]) * fragments)
-        return fragments
+        if self.gl.assembly_scheme.value == 1:  # POINT
+            return self.raster_points()
 
-    def raster_triangle(self, v1: np.array, v2: np.array, v3: np.array) -> None:
-        pass
+        elif 1 < self.gl.assembly_scheme.value < 5:  # LINE
+            return self.raster_lines()
+        else:  # TRIANGLES
+            return self.raster_triangle()
 
     @staticmethod
-    def bressenham(v0: np.array, v1: np.array) -> np.ndarray:
-        x0, y0, x1, y1 = v0[0], v0[1], v1[0], v1[1]
+    def interpolate(v0: np.array, v1: np.array, size: float) -> np.array:
+        return np.array(
+            [(v0 * (size - index) + v1 * index) / size for index in range(size + 1)]
+        )
+
+    def interpolate_attributes(self, v0: Vertex, v1: Vertex, size: int):
+        attr0 = v0.attributes.copy()
+        attr1 = v1.attributes.copy()
+        del attr0["fragment"]
+        del attr1["fragment"]
+        return {
+            name: self.interpolate(attr0[name], attr1[name], size)
+            for name in attr0.keys()
+        }
+
+    def draw_line(self, v0: Vertex, v1: Vertex) -> np.ndarray:
+
+        x0, y0 = v0.fragment
+        x0, y0 = int(x0), int(y0)
+        x1, y1 = v1.fragment
+        x1, y1 = int(x1), int(y1)
 
         dx = x1 - x0
         dy = y1 - y0
@@ -36,12 +96,24 @@ class Rasterizer:
         D = 2 * dy - dx
         y = 0
 
-        line = []
+        line_frag = np.array([], dtype=int)
 
         for x in range(dx + 1):
-            line.append((x0 + x * xx + y * yx, y0 + x * xy + y * yy))
+            line_frag = np.append(
+                line_frag, [x0 + x * xx + y * yx, y0 + x * xy + y * yy]
+            )
             if D >= 0:
                 y += 1
                 D -= 2 * dx
             D += 2 * dy
-        return line
+
+        attr = self.interpolate_attributes(v0, v1, line_frag.size // 2)
+        attr["fragment"] = line_frag.reshape(-1, 2)
+
+        raster_line = np.array([], dtype=Vertex)
+
+        for i in range(line_frag.size // 2):
+            raster_line = np.append(
+                raster_line, Vertex({k: v[i] for k, v in attr.items()})
+            )
+        return raster_line

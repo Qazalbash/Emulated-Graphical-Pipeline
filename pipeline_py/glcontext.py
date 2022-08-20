@@ -29,6 +29,7 @@ class GLContext:
         self.width = None
         self.height = None
         self.frame_buffer = None
+        self.fragment = None
 
     def set_count(self, count: int) -> None:
         self.count = count

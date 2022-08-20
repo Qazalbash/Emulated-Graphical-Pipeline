@@ -1,0 +1,30 @@
+Date: August 02, 2022
+
+Type of meeting: Individual meeting.
+
+Attendees: Meesum Ali Qazalbash, Dr Waqar Saleem.
+
+Meeting agenda: Discuss the work done in the last week.
+
+Point discussed: 
+-   We discussed the purpose of vertex shader and the use of it in the rendering process.
+-   We discussed the design of the vertex processor.
+
+Action Item:
+-   Complete the vertex processor.
+
+
+
+Date: August 04, 2022
+
+Type of meeting: Individual meeting.
+
+Attendees: Meesum Ali Qazalbash, Dr Waqar Saleem.
+
+Meeting agenda: Discuss the work done in the last week.
+
+Point discussed: 
+-   Dr Waqar decided to cancel the meeting, but in the reply I told him that I will start coding the rasterizing stage.
+
+Action Item:
+-   Complete the rasterizer.

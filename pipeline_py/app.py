@@ -4,7 +4,6 @@ gl = GLContext()
 
 gl.set_clear_color(1.0, 1.0, 1.0, 1.0)
 
-N = 1000
 
 # gl.set_uniform("matrix", np.random.rand(3, 3))
 gl.set_uniform("matrix", np.array([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]))
@@ -13,21 +12,19 @@ gl.set_uniform("matrix", np.array([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 
 
 
 lst = [
-    [1, 1],
     [0.5, 0.5],
-    [-1, 0.4],
-    [1, -1],
-    [-1, -1],
-    [-0.3, 1],
+    [0.6, 0.6],
+    # [1.0, 0.0],
+    # [-1.0, 0.0],
 ]
 
+# lst = np.random.rand(10, 2)
 N = len(lst)
 
-# gl.set_attributes("color", np.array([np.random.rand(4, 4) for _ in range(N)]))
 
-gl.assembly_scheme = Scheme.TRIANGLEFAN
-
+gl.assembly_scheme = Scheme.LINELOOP
 gl.set_attributes("position", np.array(lst))
+gl.set_attributes("color", np.random.rand(N, 4))
 
 gl.set_count(N)
 
@@ -40,7 +37,7 @@ def vertex_shader(attribute: dict, uniform: dict) -> np.ndarray:
     vertex = attribute["position"]
     for _ in range(3 - vertex.shape[0]):
         vertex = np.append(vertex, 0.0)
-    vertex = np.append(np.matmul(matrix, vertex), 1.0)
+    vertex = np.transpose(np.append(np.matmul(matrix, vertex), 1.0))
     return vertex
 
 

@@ -1,7 +1,7 @@
 from app import *
 from clipper import *
-from vertex_processor import *
 from rasterizer import *
+from vertex_processor import *
 
 assert gl.width is not None, "width of the canvas is not set"
 assert gl.height is not None, "height of the canvas is not set"
@@ -16,6 +16,7 @@ assert (
 
 gl.Position = pos
 
+
 assert (
     gl.assembly_scheme is not None
 ), "can not clip the vertices, assembly scheme is not defined."
@@ -27,7 +28,6 @@ gl.Position = cpa.run_clipper()
 
 # assert gl.zbuffer is not None, "zbuffer is not created, that could cause problem while rasterization"
 
-# ras = Rasterizer(gl)
+ras = Rasterizer(gl)
 
-# raster = ras.run_rasterizer()
-# print(raster)
+gl.fragment = ras.run_rasterizer()
