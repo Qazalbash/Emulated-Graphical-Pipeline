@@ -1,5 +1,6 @@
 from app import *
 from clipper import *
+from fragment_processor import *
 from rasterizer import *
 from vertex_processor import *
 
@@ -31,3 +32,10 @@ gl.Position = cpa.run_clipper()
 ras = Rasterizer(gl)
 
 gl.fragment = ras.run_rasterizer()
+
+gl.set_count(gl.fragment.size)
+
+
+fp = Fragment_Processor(gl)
+
+fp.run_fragment_shader()

@@ -1,7 +1,8 @@
+import enum
+
 import numpy as np
 
 from primitive import *
-import enum
 
 
 class Scheme(enum.Enum):
@@ -45,7 +46,7 @@ class GLContext:
         assert 0.0 <= green <= 1.0, "green channel must be in range [0.0, 1.0]"
         assert 0.0 <= blue <= 1.0, "blue channel must be in range [0.0, 1.0]"
         assert 0.0 <= alpha <= 1.0, "alpha channel must be in range [0.0, 1.0]"
-        self.clear_color = (red, green, blue, alpha)
+        self.clear_color = np.array([red, green, blue, alpha], dtype=float)
 
     def set_attributes(self, name: str, data: np.ndarray) -> None:
         assert type(name) is str, "name of the attribute should be str type"

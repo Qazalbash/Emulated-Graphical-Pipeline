@@ -40,11 +40,8 @@ class Rasterizer:
             raster = np.append(raster, line)
         return raster
 
-    def raster_triangle(self, v0: np.array, v1: np.array, v2: np.array) -> None:
-
-        s01 = self.draw_line(v0, v1)
-        s12 = self.draw_line(v1, v2)
-        s20 = self.draw_line(v2, v0)
+    def raster_triangles(self) -> None:
+        raise NotImplementedError("Logic for triangle rasterization is not implemented")
 
     def run_rasterizer(self) -> np.ndarray:
         if self.gl.assembly_scheme.value == 1:  # POINT
@@ -53,7 +50,7 @@ class Rasterizer:
         elif 1 < self.gl.assembly_scheme.value < 5:  # LINE
             return self.raster_lines()
         else:  # TRIANGLES
-            return self.raster_triangle()
+            return self.raster_triangles()
 
     @staticmethod
     def interpolate(v0: np.array, v1: np.array, size: float) -> np.array:
