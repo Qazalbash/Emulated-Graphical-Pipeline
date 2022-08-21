@@ -1,0 +1,371 @@
+\documentclass{article}
+
+\usepackage{biblatex}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{makecell}
+\usepackage{multirow}
+\usepackage{sectsty}
+\usepackage{tabularx}
+\usepackage{xcolor}
+
+\pagestyle{fancy}
+\fancyhf{} % Clear header/footer
+\fancyhead[L]{\color{lightgray}{Tehqiq 2020 Summer Research Program}} % left header
+\fancyfoot[R]{\thepage} % right footer
+
+\renewcommand{\thesection}{\Roman{section}.} 
+\renewcommand{\thesubsection}{\Roman{section}.\Roman{subsection}.} 
+\definecolor{msblue}{HTML}{00a2ed}
+% \allsectionsfont{\mdseries\scshape\color{msblue}}
+\sectionfont{\mdseries\scshape\color{msblue}}
+\subsectionfont{\mdseries\scshape\color{msblue}}
+% \paragraphfont{\mdseries\scshape\color{msblue}}
+
+% \setlength\parindent{0pt}
+
+\addbibresource{ref.bib}
+
+\color{darkgray}
+
+
+\begin{document}
+
+\section*{Title: Topics in Computer Graphics}
+\section*{Principal Investigator: Waqar Saleem}
+
+\section{Executive Summary}
+
+% The Executive Summary (limited to one page) provides an overview of the proposed research project with a special emphasis on the meaningful engagement of the Muhaqqiq(s).  The broad research objectives should be briefly described, as well as the activities to be undertaken to achieve the project goals. In case of basic research, scientific hypothesis should be identified on which proposed goal is based and if research is applied output in the form of a product or process, need or relationship to industry and end-user of the output/ product should be identified.
+
+
+This proposal is for 3 Computer Graphics (CG) projects in one so as to both meet the requirement to involve multiple students and to pursue different avenues that are both important and, in cases, urgent to me.
+
+\subsection*{A. Implementing the Graphics Pipeline}
+
+The computer graphics pipeline is one of the major developments in enabling real time rendering of high quality computer graphics. Introductory CG courses study the stages of the pipeline and their related algorithms. Students are then tasked to write programs to \textit{use} these stages which are typically implemented in hardware on the GPUs of their computers.
+
+This Tehqiq is to emulate the graphics pipeline in software. The Muhaqqiq will research each of the stages and their interconnections and then implement them in software so as to build a prototype emulator of the graphics pipeline. They will then iteratively refine the prototype to incorporate finer features like parallelism and efficiency.
+
+
+\subsection*{B. Developing a Dataset for Shape Complexity Estimation}
+The shape complexity problem is to estimate the perceived complexity of a shape from its 3D geometry. It is a relatively recent research area to which various approaches have been employed, including one by myself based on view similarity during my PhD. However no formal definition of shape complexity exists. Research papers on the topic verify their results based on user rankings on various shapes that have been generated for the purpose.
+
+This Tehqiq is to build a dataset that can form a common denominator for future approaches to shape complexity. The Muhaqqiq will inform themselves on and learn the necessary background for the current techniques for shape complexity. They will identify the geometric features that contribute to the perception of shape complexity and propose a dataset for the study and experimentation of different shape complexity measures. They will compile the dataset through a combination of collecting freely available shapes as well as generating new shapes. Throughout the process, they will learn the use of existing tools to facilitate their investigation or write new ones.
+
+\subsection*{C. Physically Based Rendering}
+
+Undergraduate CG courses typically cover rendering techniques that favor simplicity for realism. \textit{Physically Based Rendering} refers to a class of techniques that aim for photorealistic rendering. It is also the subject of work by the only CG company in Pakistan of any notable consequence--it was acquired just about a 100 days ago by Epic Games of Unreal Engine and Fortnite fame. Having visited the company, Quixel, over Spring Break, I find ripe opportunity for our students to contribute to world class CG work.
+
+This Tehqiq is for me and my Muhaqqiq to gain sufficient background in Physically Based Rendering to start a meaningful collaboration with Quixel. The Muhaqqiq will inform themselves on and gain the necessary background in current techniques in Physically Based Rendering. They will implement some of the learned techniques and gain proficiency in related tools.
+
+\newpage
+
+\section{Project Description}
+
+% In this Section (maximum four pages, including figures), describe in some detail the research plan for the proposed project.
+
+\subsection*{A. Implementing the Graphics Pipeline}
+
+\paragraph{Background and Problem Statement} Rendering high quality computer graphics in real time is a computationally expensive task enabled through a dedicated Graphics Processing Unit (GPU) which brings together advances in algorithms and in hardware. Every modern computer has a dedicated ob-board GPU to which the CPU delegates rendering related tasks. An important algorithmic achievement is the \textit{computer graphics pipleline}, also known as the \textit{graphics pipeline} or \textit{rendering pipeline}, so called because it breaks down the task into distinct and sequential subtasks. Each subtask is known as a \textit{stage} of the pipeline and GPUs generally implement the stages directly in hardware.\\
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=.8\textwidth]{pipeline}
+  \caption{A simplified view of the graphics pipeline showing 4 stages.}
+  \label{fig:pipeline}
+\end{figure}
+
+The graphics pipeline frequently undergoes refinement and details vary across GPU vendors but Figure \ref{fig:pipeline} shows a simplified view \cite{angel_2011}. The pipeline rightfully takes center stage in introductory CG courses where the typical approach is to study each stage and then task students with writing programs to utilize the stage. I call this a \textit{user} approach.
+% Describe accurately the problems to be addressed and/or opportunities to be pursued by the proposed project. Provide a brief survey of the relevant literature clearly highlighting the existing gaps and what new information will be added to the existing pool of knowledge and describe how the proposed project builds on prior research.  
+
+\paragraph{Specific aims and objectives}   This Tehqiq is to implement a \textit{maker} approach to the pipeline. The aim is to build the entire pipeline in software. The pipeline will be modeled in software to a suitable level of detail as determined by the progress made by the Muhaqqiq within the given time. Various algorithms can be used at each stage of the pipeline, e.g. Sutherland-Hodgman \cite{sutherland_hodgman} and Weiler-Atherton \cite{weiler_atherton} for polygon clipping in the ``Clipper and Primitive Assembler'' stage, z-buffer \cite{zbuffer} and painter's algorithm \cite{painter} in the ``Fragment Processor'' stage. Furthermore, variations on original algorithms exist, e.g. a \textit{randomized} z-buffer algorithm \cite{random_z}. We will experiment with different options in order to understand their performance and their impact on the performance of the pipeline.
+
+The aim of developing this understanding is to ultimately deliver a richer student experience in future offerings of CS 440 Computer Graphics. This aspect will play out in this Tehqiq through brainstorming sessions by myself and the Muhaqqiq in order to decide suitable homework assignments for students in those offerings.
+
+Starting with the simplified pipeline shown in Figure \ref{fig:pipeline}, there are several ways to refine it. In order of preference for this Tehqiq, these are
+\begin{itemize}
+  \item adding support for programmable stages through shaders \cite{shaders},
+  \item adding support for parallelism, and
+  \item refining each stage of the pipeline into finer, more granular stages.
+\end{itemize}
+For any of the above, the implementation will have to be constantly optimized for efficiency. How many of the above are achieved in this Tehqiq will depend on the Muhaqqiq. This Tehqiq will require only the first.
+% Specify the scope of the project accurately and list the specific aims of the project. The proposal should demonstrate that a project's objectives are feasible to achieve within the requested project duration.
+
+\paragraph{Methodology} The Muhaqqiq will make progress in this Tehqiq through online research and computer programming in the python and C++ programming languages. The software will be developed using an Object Oriented methodology so as to keep it flexible enough to easily incorporate future changes and modification. Progress will be assessed during the Flight phase of Tehqiq through regular meetings and in terms of adherence to the Tehqiq timeline given in Section \ref{sec:timeline}. The success of the project at the end of Flight will be measured in terms of achievement of the results and deliverables mentioned in the ``Results Statement'' below and also in the timeline.
+% Describe the project design, conceptual framework, procedures, and analyses to be used to accomplish the specific aims of the project. The proposals should describe a methodology for determining the degree to which a project meets its objectives, both while the project is underway and at its conclusion. If relevant, include how the data will be collected, analyzed, and interpreted as well as any data-sharing plan. As part of this section, provide a tentative sequence or timetable for the project.   
+
+\paragraph{Results statement} At the end of Flight, this Tehqiq will have produced,
+\begin{itemize}
+  \item a fully working software implementation of the simplified graphics pipeline shown in Figure \ref{fig:pipeline}
+  \item a fully working software implementation of a graphics pipeline that supports shaders
+        % \item a draft on how this development experience can be divided into homework assignments over a semester
+\end{itemize}
+Depending on the progress made by the Muhaqqiq during Flight, more may be achieved but the above points represent the minimum expectation from the Muhaqqiq.
+%Clearly and concisely state the final results expected from the research project. Identify the major deliverables that will be produced as part of this proposal (other than the mandated Tehqiq outputs)  
+
+% \paragraph{Collaborations and Partnerships (if any)} I will be the sole supervisor of this Tehqiq.
+% % Describe the role of academic/private sector collaborators (if any) for the proposed project. Identify their research skills and describe the anticipated role in the research agenda.   
+
+% \paragraph{Variations (if any)} I wish to carry out this Tehqiq with my Student Employee since Winter 2019-20 who has achieved some initial results but whose progress is now hampered due to semester work.
+% % started work on this project  student The default Tehqiq structure is for 1 faculty supervisor to work with 1-2 Muhaqqiqs  over 10 weeks. Please use this section to describe any variations from this default structure in terms of additional students, reduced duration, or co-supervisors.
+
+
+\subsection*{B. Developing a Dataset for Shape Complexity Estimation}
+
+\paragraph{Background and Problem Statement} The shape complexity problem is to estimate the perceived complexity of a shape from its 3D geometry. It is a relatively recent research area to which various approaches have been employed including total curvature \cite{matsumotoK_cag2018}, entropy \cite{rigauFS_smi2005}, view similarity \cite{saleemBWS_cag2011}, curvature \cite{pageKSAA_icip2003, sukumarPGKA_3dpvt2006, sukumarPKA_cvpr2008}, and various other geometric measures \cite{rossignac_vc2005}. One of these was developed by myself during my PhD. In the absence of a formal definition of shape complexity, these papers verify their results based on manual observations of the authors or user rankings of various shapes that have been generated by the authors for the purpose.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.7\textwidth]{complex}
+  \caption{Which of the shapes appears to be more complex? Changes in certain geometric features can alter the perceived complexity of the shape. Taken from \cite{rossignac_vc2005}.}
+  \label{fig:complex}
+\end{figure}
+
+The lack of a standard dataset makes it difficult to compare different papers and their approaches.
+% Describe accurately the problems to be addressed and/or opportunities to be pursued by the proposed project. Provide a brief survey of the relevant literature clearly highlighting the existing gaps and what new information will be added to the existing pool of knowledge and describe how the proposed project builds on prior research.  
+
+\paragraph{Specific aims and objectives} This Tehqiq is to build a dataset that can be used as a benchmark by future approaches to shape complexity. The Muhaqqiq will inform themselves on and learn the necessary background for the current techniques for shape complexity. They will identify the geometric features that contribute to the perception of shape complexity and propose a dataset for the study and experimentation of different shape complexity measures. They will compile the dataset through a combination of collecting freely available shapes as well as generating new shapes. Throughtout the process, they will learn the use of existing tools to facilitate their investigation or write new ones where required.
+% Specify the scope of the project accurately and list the specific aims of the project. The proposal should demonstrate that a project's objectives are feasible to achieve within the requested project duration.
+
+\paragraph{Methodology} The Muhaqqiq will make progress in this Tehqiq by reading research papers, performing online research, learning about various geometrical measures to characterize 3D shapes, learning and applying new computer tools, and writing computer programs to implement new tools where needed. Progress will be assessed during the Flight phase of Tehqiq through regular meetings and in terms of adherence to the Tehqiq timeline given in Section \ref{sec:timeline}. The success of the project at the end of Flight will be measured in terms of achievement of the results and deliverables mentioned in the ``Results Statement'' below and also in the timeline.
+% Describe the project design, conceptual framework, procedures, and analyses to be used to accomplish the specific aims of the project. The proposals should describe a methodology for determining the degree to which a project meets its objectives, both while the project is underway and at its conclusion. If relevant, include how the data will be collected, analyzed, and interpreted as well as any data-sharing plan. As part of this section, provide a tentative sequence or timetable for the project.   
+\paragraph{Results statement} At the end of Flight, this Tehqiq will have achieved the following.
+\begin{itemize}
+  \item The Muhaqqiq will be familiar with at least one tool to visualize 3D shapes,
+  \item The Muhaqqiq will be familiar with at least one tool to visualize attributes of 3D shapes,
+  \item The Muhaqqiq will be familiar with at least one tool to compute view 3D shapes,
+  \item The Muhaqqiq will be familiar with at least one tool to derive geometric quantities from a 3D shape--curvature, total curvature, view similarity, and entropy.
+  \item A collection of 3D shapes to be used as a benchmark for future shape complexity research.
+\end{itemize}
+In all the above, the Muhaqqiq will be expected to write their own tools whenever a feasible tool is not available. The developed dataset should ideally be made public. Otherwise, it loses its purpose. However, making it available online through a suitable web interface requires a set of skills different from those desired of the Muhaqqiq. Requiring the Muhaqqiq to acquire and apply them within the duration of Flight will not be feasible. Nor will taking on another Muhaqqiq just for this task as it will not justify the duration of Flight. Publication of the dataset will therefore be taken up in a subsequent project.
+% Clearly and concisely state the final results expected from the research project. Identify the major deliverables that will be produced as part of this proposal (other than the mandated Tehqiq outputs)
+
+% \paragraph{Collaborations and Partnerships (if any)} I am the sole supervisor.
+% \paragraph{Variations (if any)} None.
+
+\subsection*{C. Physically Based Rendering}
+
+\paragraph{Background and Problem Statement} In an otherwise barren landscape of CG research and development in Pakistan, the work done by Quixel \cite{quixel} on different aspects of Physically Based Rendering has earned it an acquisition \cite{quixel_epic} by Epic Games \cite{epic}. Quixel's co-founder is from Pakistan and has based its entire development team in Pakistan \cite{quixel_about}. I visited them in Islamabad in Spring Break and found ample room for our students to collaborate and find gainful employment doing world class CG work provided they have the required background in Physically Based Rendering. A graduate of CS 2018 already works there.
+
+\textit{Physically Based Rendering} refers to a class of techniques aimed at photorealistic rendering. These techniques encompass not just rendering but acquisition, tiling, appearance editing, and photogrammetry. The definitive book \cite{pbrt}, now in its third edition, \cite{pharrJH_2016} is the only book to have received an Academy Award \cite{pbrt_award}. Figure \ref{fig:pbr} shows an example of a physically based rendering of a 3D model of an urn.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.5\textwidth]{pbr-quixel}
+  \caption{A physically based rendering of an urn. Taken from \cite{quixel_mixer}.}
+  \label{fig:pbr}
+\end{figure}
+
+This Tehqiq is for me and my Muhaqqiq to gain sufficient background in Physically Based Rendering to start a meaningful collaboration with Quixel.
+% Describe accurately the problems to be addressed and/or opportunities to be pursued by the proposed project. Provide a brief survey of the relevant literature clearly highlighting the existing gaps and what new information will be added to the existing pool of knowledge and describe how the proposed project builds on prior research.  
+\paragraph{Specific aims and objectives} The Muhaqqiq will inform themselves on and gain the necessary background in current techniques in Physically Based Rendering by reading the above mentioned book, solving the end of chapter exercises which includes writing computer programs, and taking guidance from contacts at Quixel. The aim is for both myself and the Muhaqqiq to achieve a competent level of familiarity with Physically Based Rendering such that the Muhaqqiq can seek engagements with Quixel in the form of internships or full time employment, and I can continue to train students in the area and collaborate with Quixel.
+% Specify the scope of the project accurately and list the specific aims of the project. The proposal should demonstrate that a project's objectives are feasible to achieve within the requested project duration.
+\paragraph{Methodology} This Tehqiq requires a significant amount of reading and self-learning. Depending on availability, we will also take guidance from Quixel representatives and visit their office in Islamabad. Learned techniques will be implemented and tested through computer programming and use of existing tools. Progress will be assessed during the Flight phase of Tehqiq through regular meetings and in terms of adherence to the Tehqiq timeline given in Section \ref{sec:timeline}. The success of the project at the end of Flight will be measured in terms of achievement of the results and deliverables mentioned in the ``Results Statement'' below and also in the timeline.
+% Describe the project design, conceptual framework, procedures, and analyses to be used to accomplish the specific aims of the project. The proposals should describe a methodology for determining the degree to which a project meets its objectives, both while the project is underway and at its conclusion. If relevant, include how the data will be collected, analyzed, and interpreted as well as any data-sharing plan. As part of this section, provide a tentative sequence or timetable for the project.   
+\paragraph{Results statement} Owing to the nature of the work--it is also a learning experience for me--it is difficult right now to exactly specify the end goals. However, below is a set of minimum goals that can be reasonably expected of this Tehqiq.
+\begin{itemize}
+  \item The Muhaqqiq will gain familiarity with the concept of physically based rendering and will have implemented some related tools.
+  \item The Muhaqqiq will have read and solved exercises from the first 8 chapters of the mentioned text book.
+\end{itemize}
+% Clearly and concisely state the final results expected from the research project. Identify the major deliverables that will be produced as part of this proposal (other than the mandated Tehqiq outputs)  
+\paragraph{Collaborations and Partnerships (if any)} We will take guidance from select representatives of Quixel. These will be experts in relevant Quixel products and will provide us tips and possible access to their software.
+% Describe the role of academic/private sector collaborators (if any) for the proposed project. Identify their research skills and describe the anticipated role in the research agenda.   
+% \paragraph{Variations (if any)} The default Tehqiq structure is for 1 faculty supervisor to work with 1-2 Muhaqqiqs  over 10 weeks. Please use this section to describe any variations from this default structure in terms of additional students, reduced duration, or co-supervisors.
+
+\newpage
+
+\section{Student Eligibility and Deliverables}
+\label{sec:timeline}
+
+
+% Describe the eligibility criteria for on boarded students. The default eligibility criteria are described in the Tehqiq handbook. You may specify additional criteria, e.g. earned grade in particular courses, knowledge of particular tools.
+
+% For each Muhaqqiq, please complete the table below to propose an expected weekly timeline and description of the student deliverables. We understand the proposed schedule of activities is subject to change based on student progress.
+
+All the timelines below include but do not show weekly meetings with the Muhaqqiqs along with participation in Lunch Bunch and Biweekly Roundups.
+
+\subsection*{A. Implementing the Graphics Pipeline}
+The Muhaqqiq satisfies the following criteria.
+\begin{itemize}
+  \item strong programming skills in python and C++, demonstrated by a minimum earned grade of B+ in CS 101, CS 102, CS 224,
+  \item ability to conduct research independently after sufficient discussion with the supervisor,
+  \item comfort with object oriented design and programming,
+  \item a grade of B+ or above in CS 440 Computer Graphics,
+  \item ability to quickly learn and apply new software tools,
+  \item good communication skills, and
+  \item self motivated and responsible.
+\end{itemize}
+
+\noindent
+\begin{tabularx}{\textwidth}{|*{2}{l|}X|l|}
+  \hline
+  Week                                         & \textbf{Date}                                  & \textbf{Activity}                                                                                                                                           & \textbf{Deliverable}               \\\hline\hline
+  1                                            & June 1-June 5                                  & Understanding the Problem\newline Implementing a Screen and Framebuffer\newline Double Buffering: writing to the framebuffer asynchronously with the screen & Screen and Framebuffer             \\\hline
+  2                                            & June 8-June 12                                 & Research and Implement the fragment processor                                                                                                               & Double Buffering                   \\
+  3                                            & June 15-June 19                                & Implement the fragment processor\newline Add shader support                                                                                                 & Fragment Processor                 \\\hline
+  4                                            & June 22-June 26                                & Research and Implement the rasterizer                                                                                                                       &                                    \\
+  5                                            & June 29- July 3                                & Implement the rasterizer                                                                                                                                    & Rasterizer                         \\\hline
+  6                                            & July 6- July 10                                & Research and Implement the Clipper                                                                                                                          &                                    \\
+  7                                            & July 13- July 17                               & Implement the clipper                                                                                                                                       & Clipper                            \\\hline
+  8                                            & July 20- July 24                               & Research and Implement the vertex processor                                                                                                                 &                                    \\
+  9                                            & July 27- July 31**10                           & Implement the vertex processor\newline Add Shader support                                                                                                   & Vertex Processor                   \\\hline
+  10                                           & Aug 3- Aug 7                                   & Test the pipeline                                                                                                                                           & \shortstack[l]{Integrated pipeline \\ Summary Report}\\\hline
+  \multicolumn{2}{|l}{First Week of Fall 2020} & \multicolumn{2}{|l|}{Tehqiq Poster Exhibition}                                                                                                                                                                                                    \\\hline
+  \multicolumn{4}{l}{\footnotesize * All Muhaqqiqs and faculty supervisors are required to attend the weekly lunch bunch meetings}                                                                                                                                                                 \\
+  \multicolumn{4}{l}{\footnotesize ** Eid-ul-Adha Holiday(s)}
+\end{tabularx}
+
+\subsection*{B. Developing a Dataset for Shape Complexity Estimation}
+The Muhaqqiq satisfies the following criteria.
+\begin{itemize}
+  \item a strong background in mathematics, demonstrated by a minimum earned grade of B+ in Engineering Maths, Discrete Maths, and Linear Algebra,
+  \item strong programming skills in python and C++, demonstrated by a minimum earned grade of B+ in CS 101, CS 102, and CS 224,
+  \item ability to quickly learn and apply new software tools,
+  \item ability to quickly develop helper tools,
+  \item ability to conduct research independently after sufficient discussion with the supervisor,
+  \item good communication skills, and
+  \item self motivated and responsible.
+\end{itemize}
+
+\noindent
+\begin{tabularx}{\textwidth}{|*{2}{l|}X|l|}
+  \hline
+  \textbf{Week}                                & \textbf{Date}                                  & \textbf{Activity}                                                               & \textbf{Deliverable}     \\\hline\hline
+  1                                            & June 1-June 5                                  & Read simple features approach                                                   & 3D Viewing Tool          \\
+  2                                            & June 8-June 12                                 & Implement the measures                                                          & Complexity Estimation    \\\hline
+  3                                            & June 15-June 19                                & Read curvature based approaches                                                 &                          \\
+  4                                            & June 22-June 26                                & Learn to visualize mesh properties                                              & Attribute Visualization  \\
+  5                                            & June 29- July 3                                & Implement the measures                                                          & Complexity Visualization \\\hline
+  6                                            & July 6- July 10                                & Read and implement entropy approach                                             & Complexity Visualization \\\hline
+  7                                            & July 13- July 17                               & Read other papers\newline Determine responsible geometric attributes            &                          \\\hline
+  8                                            & July 20- July 24                               & Determine responsible geometric attributes\newline Begin compilation of dataset &                          \\\hline
+  9                                            & July 27- July 31**                             & Read about generating shapes\newline Generate shapes for dataset                &                          \\\hline
+  10                                           & Aug 3- Aug 7                                   & Finalize dataset                                                                & \shortstack[l]{Dataset   \\ Summary Report}\\\hline
+  \multicolumn{2}{|l}{First Week of Fall 2020} & \multicolumn{2}{|l|}{Tehqiq Poster Exhibition}                                                                                                              \\\hline
+  \multicolumn{4}{l}{\footnotesize * All Muhaqqiqs and faculty supervisors are required to attend the weekly lunch bunch meetings}                                                                           \\
+  \multicolumn{4}{l}{\footnotesize ** Eid-ul-Adha Holiday(s)}
+\end{tabularx}
+
+\subsection*{C. Physically Based Rendering}
+
+The Muhaqqiq satisfies the following criteria.
+\begin{itemize}
+  \item a strong background in mathematics, demonstrated by a minimum earned grade of B+ in Engineering Maths, Discrete Maths, and Linear Algebra,
+  \item an interest in Computer Graphics, demonstrated through a motivation essay highlighting any accomplishments in this direction,
+  \item strong programming skills in python and C++, demonstrated by a minimum earned grade of B+ in CS 101, CS 102, and CS 224,
+  \item ability to quickly learn and apply new software tools,
+  \item ability to quickly develop helper tools,
+  \item ability to conduct research independently after sufficient discussion with the supervisor,
+  \item availability to travel to Islamabad for a few days,
+  \item good communication skills, and
+  \item self motivated and responsible.
+\end{itemize}
+
+\noindent
+\begin{tabularx}{\textwidth}{|*{2}{l|}X|l|}
+  \hline
+  \textbf{Week}                                & \textbf{Date}                                  & \textbf{Activity}                                                      & \textbf{Deliverable}   \\\hline\hline
+  1                                            & June 1-June 5                                  & Read Chapters 1 to 3 of the PBRT book\newline Correspond with Quixel   & Quixel Tasks           \\
+  2                                            & June 8-June 12                                 & Solve and Discuss Chapter Exercises                                    & Solved Exercises       \\\hline
+  3                                            & June 15-June 19                                & Read Chapters 4 and 5 of the PBRT book\newline Correspond with Quixel  & Quixel Tasks           \\
+  4                                            & June 22-June 26                                & Solve and Discuss Chapter Exercises                                    & Solved Exercises       \\\hline
+  5                                            & June 29- July 3                                & Read Chapters 6 to 8 of the PBRT book\newline Correspond with Quixel   & Quixel Tasks           \\
+  6                                            & July 6- July 10                                & Solve and Discuss Chapter Exercises                                    & Solved Exercises       \\\hline
+  7                                            & July 13- July 17                               & Read Chapters 9 and 10 of the PBRT book\newline Correspond with Quixel & Quixel Visit           \\
+  8                                            & July 20- July 24                               & Solve and Discuss Chapter Exercises                                    & Solved Exercises       \\\hline
+  9                                            & July 27- July 31**                             & Read Chapters 9 and 10 of the PBRT book\newline Correspond with Quixel & \makecell{Quixel Tasks \\ Solved Exercises} \\
+  10                                           & Aug 3- Aug 7                                   & Solve and Discuss Chapter Exercises                                    & Summary Report         \\\hline
+  \multicolumn{2}{|l}{First Week of Fall 2020} & \multicolumn{2}{|l|}{Tehqiq Poster Exhibition}                                                                                                   \\\hline
+  \multicolumn{4}{l}{\footnotesize * All Muhaqqiqs and faculty supervisors are required to attend the weekly lunch bunch meetings}                                                                \\
+  \multicolumn{4}{l}{\footnotesize ** Eid-ul-Adha Holiday(s)}
+\end{tabularx}
+
+Once the project is approved, I will correspond with Quixel in order to work out a suitable plan for the Muhaqqiq which prepares them for the eventual visit and possibly for a gainful engagement with Quixel. If that does not work out for any reason, the time dedicated to the Quixel activities will be redirected to further coverage of the book.
+
+\newpage
+
+\section{List Of References}
+
+% References should be reported in a standard form and include: the names of all authors; the article and journal title; book title; volume and page numbers; and year of publication.  If available, a Digital Object Identifier (DOI) may be provided.
+
+
+\printbibliography[heading=none]
+
+\newpage
+
+\section{Proposed Project Budget}
+
+% If you need any additional funds for conducting research, please identify the costs in this section. For Major Equipment, identify the proposed equipment and the anticipated cost. Provide a broad description of any supplies that will be purchased.
+
+\subsection*{A. Implementing the Graphics Pipeline}
+
+No resources are required beyond those already provided through Tehqiq.
+
+\subsection*{B. Developing a Dataset for Shape Complexity Estimation}
+
+
+Funding is required for a 2TB SSD to store the dataset. The approximate cost is shown below.
+
+\begin{tabular}{|*{4}{l|}}
+  \hline
+  Item    & Expense (PKR) & Quantity & Total (PKR) \\\hline\hline
+  2TB SSD & 40,000        & 1        & 40,000      \\\hline\hline
+  Total   &               &          & 40,000      \\\hline
+\end{tabular}
+
+The above cost is the result of a cursory web search and can be refined through consultation with the university's IT or Procurement departments.
+
+\subsection*{C. Physically Based Rendering}
+
+Funding is required for a round trip to Islamabad for the Muhaqqiq and myself. The approximate costs are shown below.
+
+\begin{tabular}{|*{4}{l|}}
+  \hline
+  Activity                    & Expense (PKR) & Quantity & Total (PKR) \\\hline\hline
+  Round trip to Islamabad     & 40,000        & 2        & 80,000      \\\hline
+  Room and board in Islamabad & 10,000        & 2        & 20,000      \\\hline\hline
+  Total                       &               &          & 100,000     \\\hline
+\end{tabular}
+
+The above costs are as per my estimation and can be refined through consultation with the university's travel department. While I will negotiate with Quixel to cover part of this cost, I am including it here as I would not want these activities to be jeopardized due to unclarity on the source of funding.
+
+\newpage
+
+\section{Tehqiq Supervisor Undertaking}
+
+On acceptance of my proposal, I agree to work with Tehqiq Director and the Dean of Faculty (DoF) to ensure a rewarding and productive experience for Muhaqqiqs. This includes, but is not limited to, the following.
+
+\begin{itemize}
+  \item I will review the students applications shared by OCS in order to select my Muhaqqiq(s).
+  \item I will give a short presentation on the proposed research to the Tehqiq community in the first Lunch Bunch.
+  \item I will meet at least once a week with my Muhaqqiq(s) in order to review their progress, answer their queries, and to provide constructive feedback and general guidance.
+  \item I will regularly attend Lunch Bunch meetings.*
+  \item I will regularly attend Biweekly Roundup meetings.*
+  \item I will enter a note in Faculty Reference Bank for my Muhaqqiq(s) by the first week of Fall.
+  \item I will attend Tehqiq Exhibition when it is scheduled in Fall.
+\end{itemize}
+
+* Supervisors are expected to attend at a minimum, 70\% of all meetings.
+
+\vspace{100pt}
+
+
+
+\noindent
+\begin{tabular}{l@{ : \hspace{20pt}}l}
+  Name      & Waqar Saleem                \\
+  Date      & 9 March 2020                \\
+  Signature & \includegraphics{signature}
+\end{tabular}
+
+\end{document}
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

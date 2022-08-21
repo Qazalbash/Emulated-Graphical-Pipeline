@@ -1,0 +1,18 @@
+\contentsline {section}{\numberline {1}Problem Statement}{2}{section.1}%
+\contentsline {section}{\numberline {2}Rationale}{2}{section.2}%
+\contentsline {section}{\numberline {3}Literature Review}{2}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Introduction}{2}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Related Work}{2}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}WebGL for experiments}{2}{subsection.3.3}%
+\contentsline {section}{\numberline {4}Design \& Methodologies}{3}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Application Program}{3}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}GL Context}{3}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Graphical Pipeline}{4}{subsection.4.3}%
+\contentsline {subsubsection}{\numberline {4.3.1}Vertex Processor}{4}{subsubsection.4.3.1}%
+\contentsline {subsubsection}{\numberline {4.3.2}Clipping \& Primitive Assembly}{4}{subsubsection.4.3.2}%
+\contentsline {subsubsection}{\numberline {4.3.3}Rasterizer}{4}{subsubsection.4.3.3}%
+\contentsline {subsubsection}{\numberline {4.3.4}Fragment Processor}{4}{subsubsection.4.3.4}%
+\contentsline {section}{\numberline {5}Research Results}{5}{section.5}%
+\contentsline {section}{\numberline {6}Conclusion}{5}{section.6}%
+\contentsline {section}{\numberline {7}Reflections on Research Journey}{5}{section.7}%
+\contentsline {section}{\numberline {8}Acknowledgements}{5}{section.8}%
