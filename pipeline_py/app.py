@@ -18,13 +18,15 @@ gl.set_uniform("matrix", np.array([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 
 #     [-1.0, 0.0],
 # ]
 
-lst = np.random.rand(10000, 2) - 0.5
+lst = np.random.rand(10, 2) - 0.5
+# lst = [[-1.0, 1.0], [1.0, -1.0]]
 N = len(lst)
 
 
-gl.assembly_scheme = Scheme.TRIANGLE
+gl.assembly_scheme = Scheme.LINE
 gl.set_attributes("position", np.array(lst))
 gl.set_attributes("color", np.random.rand(N, 4))
+# gl.set_attributes("color", np.array([[1.0, 0.0, 0.0, 1.0], [0.0, 1.0, 0.0, 1.0]]))
 
 gl.set_count(N)
 
