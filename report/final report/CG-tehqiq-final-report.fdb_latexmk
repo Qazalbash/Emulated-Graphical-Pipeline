@@ -1,7 +1,7 @@
 # Fdb version 3
-["pdflatex"] 1661104489 "/media/maq/Habib University/Computer-Graphics-Tehqiq/report/final report/CG-tehqiq-final-report.tex" "CG-tehqiq-final-report.pdf" "CG-tehqiq-final-report" 1661104491
+["pdflatex"] 1661274206 "/media/maq/Habib University/Computer-Graphics-Tehqiq/report/final report/CG-tehqiq-final-report.tex" "CG-tehqiq-final-report.pdf" "CG-tehqiq-final-report" 1661274207
   "/etc/texmf/web2c/texmf.cnf" 1660238922 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/media/maq/Habib University/Computer-Graphics-Tehqiq/report/final report/CG-tehqiq-final-report.tex" 1661104489 10552 9ef3bd3d1020f152a68f5b317b97f7ae ""
+  "/media/maq/Habib University/Computer-Graphics-Tehqiq/report/final report/CG-tehqiq-final-report.tex" 1661273336 10529 a56e274c3b7065960d105f529a7e1c87 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy5.tfm" 1246382020 1120 1e8878807317373affa7f7bba4cf2f6a ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy6.tfm" 1246382020 1124 14ccf5552bc7f77ca02a8a402bea8bfb ""
@@ -256,13 +256,13 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1644012257 39432 7155514e09a3d69036fac785183a21c2 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1660238943 4379155 98693266ff65f58d9f98aff394de12d2 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1660238972 2802007 ac3e95fd5631cdeb14b674633da21109 ""
-  "CG-tehqiq-final-report.aux" 1661104491 3800 5ec8543161179aa64ffa8c679229a7d9 "pdflatex"
-  "CG-tehqiq-final-report.out" 1661104491 2785 d5eed459ad64a40abcc2b7f71073bf0a "pdflatex"
-  "CG-tehqiq-final-report.tex" 1661104489 10552 9ef3bd3d1020f152a68f5b317b97f7ae ""
-  "CG-tehqiq-final-report.toc" 1661104491 1658 50ccbca6eef87d92a486838244ba6d5a "pdflatex"
+  "CG-tehqiq-final-report.aux" 1661274207 3772 1a505a2d6895474c3b9c9e40c80e29cc "pdflatex"
+  "CG-tehqiq-final-report.out" 1661274207 2785 d5eed459ad64a40abcc2b7f71073bf0a "pdflatex"
+  "CG-tehqiq-final-report.tex" 1661273336 10529 a56e274c3b7065960d105f529a7e1c87 ""
+  "CG-tehqiq-final-report.toc" 1661274207 1658 50ccbca6eef87d92a486838244ba6d5a "pdflatex"
   "HU-LOGO--01.jpg" 1661078658 30549 6763ce3fa67e4a7a1a3966bc02a0e65f ""
-  "first_output.png" 1661104156 46813 48fdc150998d605a4cc57432a7e197d6 ""
-  "pipeline-design.png" 1661092566 101913 38dff216e9595309f1be116877290f70 ""
+  "pipeline-design.png" 1661091746 69075 980c35076ae659b72d7200b22ea198b7 ""
+  "tricolor-triangle.png" 1661273290 20570 b3f4301951026ceb0f69c5e9a8cefdcd ""
   (generated)
   "CG-tehqiq-final-report.aux"
   "CG-tehqiq-final-report.log"

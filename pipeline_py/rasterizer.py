@@ -87,7 +87,7 @@ class Rasterizer:
     @staticmethod
     def interpolate(v0: np.array, v1: np.array, size: float) -> np.array:
         return np.array(
-            [(v0 * (size - index) + v1 * index) / size for index in range(size + 1)]
+            [v0 * (1 - index / size) + v1 * (index / size) for index in range(size + 1)]
         )
 
     def interpolate_attributes(self, v0: Vertex, v1: Vertex, size: int):

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.8.11)  21 AUG 2022 22:54
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.8.11)  23 AUG 2022 22:03
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -950,24 +950,24 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has b
                    \relax 
 l.112 \newpage
                [1] [2]
-<pipeline-design.png, id=135, 772.83731pt x 551.05875pt>
+<pipeline-design.png, id=135, 1717.41624pt x 1224.575pt>
 File: pipeline-design.png Graphic file (type png)
 <use pipeline-design.png>
 Package pdftex.def Info: pipeline-design.png  used on input line 155.
-(pdftex.def)             Requested size: 435.32422pt x 310.40701pt.
+(pdftex.def)             Requested size: 435.32422pt x 310.3846pt.
  [3 <./pipeline-design.png>] [4]
-<first_output.png, id=163, 803.0pt x 602.25pt>
-File: first_output.png Graphic file (type png)
-<use first_output.png>
-Package pdftex.def Info: first_output.png  used on input line 196.
+<tricolor-triangle.png, id=163, 803.0pt x 602.25pt>
+File: tricolor-triangle.png Graphic file (type png)
+<use tricolor-triangle.png>
+Package pdftex.def Info: tricolor-triangle.png  used on input line 196.
 (pdftex.def)             Requested size: 241.84843pt x 181.38399pt.
- [5 <./first_output.png>] [6] (./CG-tehqiq-final-report.aux)
+ [5 <./tricolor-triangle.png>] [6] (./CG-tehqiq-final-report.aux)
 Package rerunfilecheck Info: File `CG-tehqiq-final-report.out' has not changed.
 (rerunfilecheck)             Checksum: D5EED459AD64A40ABCC2B7F71073BF0A;2785.
  ) 
 Here is how much of TeX's memory you used:
  39553 strings out of 478287
- 905301 string characters out of 5849289
+ 905336 string characters out of 5849289
  1540628 words of memory out of 5000000
  57054 multiletter control sequences out of 15000+600000
  482377 words of font info for 75 fonts, out of 8000000 for 9000
@@ -976,7 +976,7 @@ Here is how much of TeX's memory you used:
 pdfTeX warning (dest): name{Hfootnote.1} has been referenced but does not exist, replaced by a fixed one
 
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on CG-tehqiq-final-report.pdf (7 pages, 271051 bytes).
+Output written on CG-tehqiq-final-report.pdf (7 pages, 368668 bytes).
 PDF statistics:
  238 PDF objects out of 1000 (max. 8388607)
  201 compressed objects within 3 object streams

@@ -46,7 +46,12 @@ start = time()
 
 
 fp = Fragment_Processor(gl)
-fp.run_fragment_shader()
+frame_buffer = fp.run_fragment_shader()
 
 print("Fragment shader time:", time() - start)
 start = time()
+
+
+image = Image.fromarray(frame_buffer, "RGBA")
+image.save("pipeline_py/output/" + gl.name)
+image.show()

@@ -1306,11 +1306,11 @@ INPUT ./pipeline-design.png
 INPUT pipeline-design.png
 INPUT ./pipeline-design.png
 INPUT ./pipeline-design.png
-INPUT ./first_output.png
-INPUT ./first_output.png
-INPUT first_output.png
-INPUT ./first_output.png
-INPUT ./first_output.png
+INPUT ./tricolor-triangle.png
+INPUT ./tricolor-triangle.png
+INPUT tricolor-triangle.png
+INPUT ./tricolor-triangle.png
+INPUT ./tricolor-triangle.png
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr8.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr6.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi8.tfm
