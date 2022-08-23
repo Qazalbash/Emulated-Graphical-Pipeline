@@ -43,6 +43,30 @@ class Rasterizer:
     def raster_triangles(self) -> None:
         raise NotImplementedError("Logic for triangle rasterization is not implemented")
 
+    @staticmethod
+    def y_stack(v0: Vertex, v1: Vertex, v2: Vertex) -> np.ndarray:
+        x0, y0 = v0.fragment
+        x1, y1 = v1.fragment
+        x2, y2 = v2.fragment
+        return {
+            y: np.array([], dtype=Vertex)
+            for y in range(min(y0, y1, y2), max(y0, y1, y2) + 1)
+        }
+
+    def raster_traingle(self, v0: Vertex, v1: Vertex, v2: Vertex) -> None:
+        s01 = self.draw_line(v0, v1)
+        s12 = self.draw_line(v1, v2)
+        s20 = self.draw_line(v2, v0)
+
+        stack = self.y_stack(v0, v1, v2)
+
+        for side in s01:
+            stack = np.append(stack.get(side.fragment[0]))
+
+        # self.raster = np.append(self.raster, s01)
+        # self.raster = np.append(self.raster, s12)
+        # self.raster = np.append(self.raster, s20)
+
     def run_rasterizer(self) -> np.ndarray:
         if self.gl.assembly_scheme.value == 1:  # POINT
             return self.raster_points()
