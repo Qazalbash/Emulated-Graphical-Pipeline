@@ -1,18 +1,15 @@
-import enum
-
 import numpy as np
 
 from primitive import *
 
 
-class Scheme(enum.Enum):
-    POINT = 1
-    LINE = 2
-    LINESTRIP = 3
-    LINELOOP = 4
-    TRIANGLE = 5
-    TRIANGLESTRIP = 6
-    TRIANGLEFAN = 7
+POINT = 1
+LINE = 2
+LINESTRIP = 3
+LINELOOP = 4
+TRIANGLE = 5
+TRIANGLESTRIP = 6
+TRIANGLEFAN = 7
 
 
 class GLContext:
@@ -31,6 +28,7 @@ class GLContext:
         self.height = None
         self.frame_buffer = None
         self.fragment = None
+        self.name = None
 
     def set_count(self, count: int) -> None:
         self.count = count

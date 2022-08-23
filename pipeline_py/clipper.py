@@ -1,4 +1,3 @@
-from ast import Delete
 from glcontext import GLContext
 from primitive import *
 
@@ -86,26 +85,30 @@ class Clipper:
 
         positions = self.gl.Position[mask]
 
-        if not (0 < self.gl.assembly_scheme.value < 8):
+        if not (0 < self.gl.assembly_scheme < 8):
             raise TypeError("Invalid assembly scheme")
 
-        elif self.gl.assembly_scheme.value == 1:  # points
-            return self.assemble_points(positions)
+        elif self.gl.assembly_scheme == 1:  # points
+            positions = self.assemble_points(positions)
 
-        elif self.gl.assembly_scheme.value == 2:  # lines
-            return self.assemble_lines(positions)
+        elif self.gl.assembly_scheme == 2:  # lines
+            positions = self.assemble_lines(positions)
 
-        elif self.gl.assembly_scheme.value == 3:  # linestrip
-            return self.assemble_linestrips(positions)
+        elif self.gl.assembly_scheme == 3:  # linestrip
+            positions = self.assemble_linestrips(positions)
 
-        elif self.gl.assembly_scheme.value == 4:  # lineloop
-            return self.assemble_lineloop(positions)
+        elif self.gl.assembly_scheme == 4:  # lineloop
+            positions = self.assemble_lineloop(positions)
 
-        elif self.gl.assembly_scheme.value == 5:  # triangles
-            return self.assemble_triangles(positions)
+        elif self.gl.assembly_scheme == 5:  # triangles
+            positions = self.assemble_triangles(positions)
 
-        elif self.gl.assembly_scheme.value == 6:  # triangle strip
-            return self.assemble_trianglestrip(positions)
+        elif self.gl.assembly_scheme == 6:  # triangle strip
+            positions = self.assemble_trianglestrip(positions)
 
-        elif self.gl.assembly_scheme.value == 7:  # triangle fan
-            return self.assemble_trianglefan(positions)
+        elif self.gl.assembly_scheme == 7:  # triangle fan
+            positions = self.assemble_trianglefan(positions)
+
+        np.vectorize(lambda v: v.trim())(positions)
+
+        return positions

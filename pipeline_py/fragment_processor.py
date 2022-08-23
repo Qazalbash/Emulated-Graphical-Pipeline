@@ -24,6 +24,7 @@ class Fragment_Processor:
             ] = shaded_frag
 
         self.image = Image.fromarray(self.image, "RGBA")
+        self.image.save("pipeline_py/output/" + self.gl.name)
         self.image.show()
 
     def save_image(self, name, path) -> None:
