@@ -1,5 +1,7 @@
 from time import time
 
+from PIL import Image
+
 from app import *
 from clipper import *
 from fragment_processor import *
@@ -18,22 +20,20 @@ pos = vp.run_vertex_shader()
 print("Vertex shader time:", time() - start)
 start = time()
 
-assert (
-    isinstance(pos, np.ndarray) and len(pos) == gl.count
-), "Bad result from vertex shader"
+assert (isinstance(pos, np.ndarray)
+        and len(pos) == gl.count), "Bad result from vertex shader"
 
 gl.Position = pos
 
 assert (
-    gl.assembly_scheme is not None
-), "can not clip the vertices, assembly scheme is not defined."
+    gl.assembly_scheme
+    is not None), "can not clip the vertices, assembly scheme is not defined."
 
 cpa = Clipper(gl)
 gl.Position = cpa.run_clipper()
 
 print("Clipper time:", time() - start)
 start = time()
-
 
 # assert gl.zbuffer is not None, "zbuffer is not created, that could cause problem while rasterization"
 
@@ -44,13 +44,11 @@ gl.set_count(gl.fragment.size)
 print("Rasterizer time:", time() - start)
 start = time()
 
-
 fp = Fragment_Processor(gl)
 frame_buffer = fp.run_fragment_shader()
 
 print("Fragment shader time:", time() - start)
 start = time()
-
 
 image = Image.fromarray(frame_buffer, "RGBA")
 image.save("pipeline_py/output/" + gl.name)
