@@ -2,6 +2,7 @@ import numpy as np
 
 
 class Vertex:
+
     def __init__(self, attributes: dict) -> None:
         self.attributes = attributes
 
@@ -26,11 +27,11 @@ class Vertex:
 
     def __repr__(self) -> str:
         return "Vertex" + str(self.attributes["position"])
-        # return str(self.attributes)
 
     def __getitem__(self, index: int | slice) -> int | float | np.ndarray:
         if isinstance(index, slice):
-            return self.attributes["position"][index.start : index.stop : index.step]
+            return self.attributes["position"][index.start:index.stop:index.
+                                               step]
         elif isinstance(index, int):
             return self.attributes["position"][index]
 

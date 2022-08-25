@@ -18,7 +18,7 @@ class GLContext:
     def __init__(self) -> None:
 
         # clear color or default color of canvas on RGBA format with 8 bit per channel
-        self.clear_color = np.array([0, 0, 0, 225], dtype=np.uint8)
+        self.clear_color = None
 
         # shader programs
         self.vShader = None
@@ -31,7 +31,7 @@ class GLContext:
         self.uniforms = {}
 
         # number of vertices
-        self.count = 0
+        self.count = None
 
         # position of vertices
         self.Position = None
@@ -63,9 +63,8 @@ class GLContext:
         """
         self.count = count
 
-    def set_clear_color(
-        self, red: np.int8, green: np.int8, blue: np.int8, alpha: np.int8
-    ) -> None:
+    def set_clear_color(self, red: np.int8, green: np.int8, blue: np.int8,
+                        alpha: np.int8) -> None:
         """setter for clear color
 
         Args:
@@ -88,7 +87,8 @@ class GLContext:
             data (np.ndarray): values of that attribute for each vertex in order
         """
         assert type(name) is str, "name of the attribute should be str type"
-        assert type(data) is np.ndarray, "type of the data should be numpy array"
+        assert type(
+            data) is np.ndarray, "type of the data should be numpy array"
         self.attributes[name] = data
 
     def set_uniform(self, name: str, data: int | float | np.ndarray) -> None:
@@ -99,9 +99,8 @@ class GLContext:
             data (int | float | np.ndarray): value of the uniform
         """
         assert type(name) is str, "name of the attribute should be str type"
-        assert (
-            type(data) is int or type(data) is float or type(data) is np.ndarray
-        ), "type of the data should be numpy array"
+        assert (type(data) is int or type(data) is float or type(data) is
+                np.ndarray), "type of the data should be numpy array"
         self.uniforms[name] = data
 
     def set_canvas_size(self, width: int, height: int) -> None:
