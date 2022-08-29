@@ -4,17 +4,15 @@ This project was a part of Summer Tehqiq Research Program 2022. The design of th
 
 This is one of the output form the pipeline.
 
-
 <p align="center">
-<img src="pipeline_py/output/tricolor-triangle.png" alt="Plank's Triangle"/>
+<img src="output/tricolor-triangle.png" alt="Plank's Triangle"/>
 </p>
 
 The design of the pipeline is, the pipeline is a series of stages that are executed in order.
 
 <p align="center">
-<img src="pipeline_py/pipeline-design.png" alt="Pipeline's design"/>
+<img src="pipeline-design.png" alt="Pipeline's design"/>
 </p>
-
 
 Every thing is connected to GL context that stores all the information about the rendering process. Except the application program everything is a class. Clipping and Primitive Assembly stage and Rasterization stage are the two which are parallellized through vectorization.
 
