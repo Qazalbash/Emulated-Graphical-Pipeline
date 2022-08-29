@@ -1,5 +1,8 @@
 # Implementing the Graphics Pipeline
 
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/ai-maq/Computer-Graphics-Tehqiq.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ai-maq/Computer-Graphics-Tehqiq/alerts/)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/ai-maq/Computer-Graphics-Tehqiq.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ai-maq/Computer-Graphics-Tehqiq/context:python)
+
 This project was a part of Summer Tehqiq Research Program 2022. The design of the pipeline is pretty much inspired from the WebGL and I had tried to conserve and replicate the syntax and basic logic as it was in WebGL into out pipeline.
 
 This is one of the output form the pipeline.
